@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shan Dogar Plomberie — Eaubonne &amp; environs</title>
+<meta name="description" content="Plombier à Eaubonne (95). Dépannage urgent, fuites, débouchage, installation sanitaire. Devis gratuit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17212B;
+    --ink-soft:#3A4956;
+    --paper:#EEF0EA;
+    --paper-raised:#F7F8F3;
+    --line:#D3D6C7;
+    --copper:#B5651D;
+    --copper-bright:#D98A46;
+    --teal:#1F6F78;
+    --teal-dark:#164F56;
+    --ok:#3E7A4C;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:0.92;
+    margin:0;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  button{font-family:inherit;cursor:pointer;}
+
+  /* -------- focus visibility -------- */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
+    outline:3px solid var(--copper-bright);
+    outline-offset:2px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
+  }
+
+  /* -------- top bar -------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    background:var(--ink);
+    color:var(--paper);
+    border-bottom:3px solid var(--copper);
+  }
+  .topbar-inner{
+    max-width:1080px;margin:0 auto;padding:10px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .brand{
+    display:flex;align-items:baseline;gap:8px;
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;font-size:20px;letter-spacing:0.02em;text-transform:uppercase;
+  }
+  .brand span{color:var(--copper-bright);}
+  .call-pill{
+    display:flex;align-items:center;gap:8px;
+    background:var(--copper);
+    color:#fff;
+    padding:8px 14px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:14px;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .call-pill svg{width:16px;height:16px;flex:none;}
+
+  /* -------- hero -------- */
+  .hero{
+    background:
+      radial-gradient(ellipse 900px 500px at 85% -10%, rgba(31,111,120,0.35), transparent 60%),
+      var(--ink);
+    color:var(--paper);
+    padding:64px 0 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; right:-60px; bottom:-80px;
+    width:320px; height:320px;
+    border:2px solid rgba(217,138,70,0.25);
+    border-radius:50%;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--copper-bright);
+    border:1px solid rgba(217,138,70,0.4);
+    padding:5px 10px;
+    border-radius:999px;
+    margin-bottom:20px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(62,122,76,0.25);}
+  .hero h1{
+    font-size:clamp(40px,7vw,72px);
+    max-width:760px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--copper-bright);
+  }
+  .hero p.lead{
+    font-family:'Inter',sans-serif;
+    font-size:18px;
+    line-height:1.55;
+    color:#C9D1D6;
+    max-width:520px;
+    margin:20px 0 32px;
+  }
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 22px;
+    font-weight:700;font-size:15px;
+    border-radius:var(--radius);
+    text-decoration:none;
+    border:2px solid transparent;
+  }
+  .btn-primary{background:var(--copper);color:#fff;}
+  .btn-primary:hover{background:var(--copper-bright);}
+  .btn-ghost{background:transparent;color:var(--paper);border-color:rgba(238,240,234,0.35);}
+  .btn-ghost:hover{border-color:var(--paper);}
+  .btn svg{width:18px;height:18px;flex:none;}
+
+  .stat-strip{
+    margin-top:44px;
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:1px solid rgba(238,240,234,0.15);
+    padding-top:24px;
+    max-width:560px;
+    gap:16px;
+  }
+  .stat-num{font-family:'Big Shoulders Display',sans-serif;font-weight:800;font-size:32px;color:var(--copper-bright);}
+  .stat-label{font-size:12px;color:#9FADB5;letter-spacing:0.03em;}
+
+  /* -------- section heading -------- */
+  .section{padding:64px 0;}
+  .section-head{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+    margin-bottom:32px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:16px;
+  }
+  .section-head h2{font-size:clamp(28px,4.5vw,42px);}
+  .section-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+
+  /* -------- services : job-ticket style -------- */
+  .tickets{display:flex;flex-direction:column;gap:2px;}
+  .ticket{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:4px solid var(--teal);
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;
+    padding:18px 20px;
+    position:relative;
+  }
+  .ticket.urgent{border-left-color:var(--copper);}
+  .ticket-left{display:flex;align-items:center;gap:16px;min-width:0;}
+  .ticket-icon{
+    width:44px;height:44px;flex:none;
+    border-radius:50%;
+    background:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ticket-icon svg{width:22px;height:22px;stroke:var(--paper);}
+  .ticket-name{font-weight:700;font-size:17px;}
+  .ticket-desc{font-size:13.5px;color:var(--ink-soft);margin-top:2px;}
+  .ticket-leader{
+    flex:1;
+    border-bottom:2px dotted var(--line);
+    margin:0 12px;
+    min-width:24px;
+    display:none;
+  }
+  .ticket-price{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;font-size:15px;
+    white-space:nowrap;
+    background:var(--ink);
+    color:var(--paper);
+    padding:6px 10px;
+  }
+  .ticket-badge{
+    position:absolute; top:-9px; right:16px;
+    background:var(--copper); color:#fff;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+    padding:3px 8px;
+  }
+  @media(min-width:640px){ .ticket-leader{display:block;} }
+
+  .price-note{
+    margin-top:16px;
+    font-size:13px;color:var(--ink-soft);
+    display:flex;gap:8px;align-items:flex-start;
+  }
+
+  /* -------- gallery -------- */
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+  }
+  .job-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+  }
+  .job-photo{
+    aspect-ratio:4/3;
+    background:
+      repeating-linear-gradient(45deg, rgba(23,33,43,0.06) 0 10px, transparent 10px 20px),
+      var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    color:#8FA0A8;
+    position:relative;
+  }
+  .job-photo svg{width:36px;height:36px;opacity:0.5;}
+  .job-photo .swap-label{
+    position:absolute;bottom:8px;left:8px;right:8px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;letter-spacing:0.04em;
+    color:#B9C4C9;
+    background:rgba(0,0,0,0.35);
+    padding:4px 6px;
+  }
+  .job-info{padding:12px 14px;}
+  .job-title{font-weight:700;font-size:14.5px;}
+  .job-loc{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+
+  /* -------- why / trust -------- */
+  .trust-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:1px;background:var(--line);
+    border:1px solid var(--line);
+  }
+  .trust-item{background:var(--paper-raised);padding:22px 20px;}
+  .trust-item svg{width:26px;height:26px;stroke:var(--copper);margin-bottom:10px;}
+  .trust-item h3{font-family:'Inter',sans-serif;text-transform:none;font-weight:700;font-size:15.5px;margin-bottom:4px;}
+  .trust-item p{font-size:13.5px;color:var(--ink-soft);margin:0;line-height:1.5;}
+
+  /* -------- booking -------- */
+  .booking{
+    background:var(--ink);
+    color:var(--paper);
+    padding:56px 0 64px;
+  }
+  .booking .section-head{border-bottom-color:rgba(238,240,234,0.25);}
+  .booking .section-tag{color:#9FADB5;}
+  .booking-grid{
+    display:grid;grid-template-columns:1fr;gap:32px;
+  }
+  @media(min-width:860px){ .booking-grid{grid-template-columns:1.1fr 0.9fr;} }
+
+  .form-card{
+    background:var(--paper-raised);
+    color:var(--ink);
+    padding:24px;
+    position:relative;
+  }
+  .form-card::before{
+    content:"BON D'INTERVENTION";
+    position:absolute;top:14px;right:16px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;letter-spacing:0.1em;
+    color:var(--line);
+  }
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;font-size:12.5px;font-weight:600;
+    margin-bottom:6px;color:var(--ink-soft);
+    text-transform:uppercase;letter-spacing:0.04em;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--line);
+    background:#fff;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    border-radius:var(--radius);
+  }
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:480px){ .field-row{grid-template-columns:1fr;} }
+  .submit-btn{
+    width:100%;
+    background:var(--copper);
+    color:#fff;border:none;
+    padding:14px;font-weight:700;font-size:15px;
+    margin-top:4px;
+  }
+  .submit-btn:hover{background:var(--copper-bright);}
+  .form-hint{font-size:12px;color:var(--ink-soft);margin-top:10px;}
+
+  .contact-card{display:flex;flex-direction:column;gap:18px;}
+  .contact-line{
+    display:flex;align-items:center;gap:14px;
+    padding:14px 0;
+    border-bottom:1px solid rgba(238,240,234,0.15);
+  }
+  .contact-line svg{width:20px;height:20px;stroke:var(--copper-bright);flex:none;}
+  .contact-line a{text-decoration:none;font-weight:600;}
+  .contact-line .label{display:block;font-size:11.5px;color:#9FADB5;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:2px;}
+  .zone-box{
+    border:1px dashed rgba(238,240,234,0.3);
+    padding:16px;font-size:13.5px;color:#C9D1D6;line-height:1.6;
+  }
+  .zone-box strong{color:var(--paper);}
+
+  /* -------- footer -------- */
+  footer{
+    background:#11181F;
+    color:#7F8D95;
+    padding:28px 0;
+    font-size:12.5px;
+    text-align:center;
+  }
+  footer strong{color:var(--paper);}
+
+  /* -------- floating mobile call bar -------- */
+  .mobile-call-bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:var(--ink);
+    border-top:2px solid var(--copper);
+    display:flex;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+    gap:10px;
+  }
+  .mobile-call-bar a{
+    flex:1;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    padding:12px;
+    font-weight:700;font-size:14px;
+    text-decoration:none;
+    border-radius:var(--radius);
+  }
+  .mobile-call-bar .call{background:var(--copper);color:#fff;}
+  .mobile-call-bar .whats{background:#1F6F78;color:#fff;}
+  .mobile-call-bar svg{width:17px;height:17px;}
+  body{padding-bottom:0;}
+  @media(max-width:640px){ body{padding-bottom:72px;} }
+  @media(min-width:641px){ .mobile-call-bar{display:none;} }
+
+  /* -------- scroll reveal -------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible{opacity:1;transform:none;}
+
+  /* -------- floating drops (hero decoration) -------- */
+  .drop{
+    position:absolute;
+    width:10px;height:14px;
+    background:var(--copper-bright);
+    opacity:0.18;
+    border-radius:0 60% 60% 60%;
+    transform:rotate(45deg);
+    animation:drip 7s ease-in infinite;
+  }
+  .drop.d2{left:78%; width:7px;height:10px; animation-duration:9s; animation-delay:1.5s;}
+  .drop.d3{left:65%; width:5px;height:8px; animation-duration:5.5s; animation-delay:3s;}
+  @keyframes drip{
+    0%{transform:translateY(0) rotate(45deg); opacity:0;}
+    10%{opacity:0.22;}
+    90%{opacity:0.15;}
+    100%{transform:translateY(140px) rotate(45deg); opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){ .drop{display:none;} }
+
+  /* -------- ripple on buttons -------- */
+  .btn, .submit-btn, .call-pill{position:relative;overflow:hidden;}
+  .ripple{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.55);
+    transform:scale(0);
+    animation:ripple-anim .55s ease-out forwards;
+    pointer-events:none;
+  }
+  @keyframes ripple-anim{ to{ transform:scale(3); opacity:0; } }
+
+  /* -------- ticket hover polish -------- */
+  .ticket{transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;}
+  .ticket:hover{
+    transform:translateX(4px);
+    box-shadow:-4px 0 0 var(--copper);
+  }
+  .ticket-price{transition:background .2s ease, transform .2s ease;}
+  .ticket:hover .ticket-price{background:var(--copper);transform:scale(1.05);}
+  .ticket.match{
+    border-left-color:var(--copper);
+    box-shadow:0 0 0 2px var(--copper-bright);
+    animation:match-pulse 1.4s ease-out 2;
+  }
+  @keyframes match-pulse{
+    0%{box-shadow:0 0 0 0 rgba(217,138,70,0.55);}
+    100%{box-shadow:0 0 0 10px rgba(217,138,70,0);}
+  }
+
+  .job-card{transition:transform .25s ease, box-shadow .25s ease;}
+  .job-card:hover{transform:translateY(-5px);box-shadow:0 10px 24px rgba(23,33,43,0.12);}
+
+  .trust-item{transition:background .2s ease;}
+  .trust-item:hover{background:var(--paper);}
+  .trust-item:hover svg{animation:wiggle .5s ease;}
+  @keyframes wiggle{
+    0%,100%{transform:rotate(0);}
+    25%{transform:rotate(-8deg);}
+    75%{transform:rotate(8deg);}
+  }
+
+  /* -------- diagnostic widget -------- */
+  .diag{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:4px solid var(--copper);
+    padding:22px 24px;
+    margin-top:28px;
+    max-width:640px;
+  }
+  .diag-title{
+    font-weight:700;font-size:15px;
+    margin-bottom:12px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .diag-title svg{width:18px;height:18px;stroke:var(--copper);flex:none;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    background:#fff;
+    border:1px solid var(--line);
+    padding:9px 14px;
+    font-size:13.5px;font-weight:600;
+    border-radius:999px;
+    cursor:pointer;
+    transition:background .2s ease, border-color .2s ease, transform .15s ease;
+    color:var(--ink);
+  }
+  .chip:hover{border-color:var(--copper);transform:translateY(-1px);}
+  .chip.active{background:var(--copper);border-color:var(--copper);color:#fff;}
+  .diag-result{
+    margin-top:16px;
+    padding:14px 16px;
+    background:var(--ink);
+    color:var(--paper);
+    font-size:14px;
+    line-height:1.5;
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .diag-result.show{display:flex;animation:slide-in .35s ease;}
+  @keyframes slide-in{
+    from{opacity:0;transform:translateY(-6px);}
+    to{opacity:1;transform:none;}
+  }
+  .diag-result strong{color:var(--copper-bright);}
+  .diag-result .mini-btn{
+    background:var(--copper);
+    color:#fff;
+    padding:8px 14px;
+    border-radius:var(--radius);
+    font-weight:700;font-size:13px;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">SHAN DOGAR <span>PLOMBERIE</span></div>
+      <a class="call-pill" href="tel:+33783338968">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        07 83 33 89 68
+      </a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="drop"></div>
+    <div class="drop d2"></div>
+    <div class="drop d3"></div>
+    <div class="wrap">
+      <div class="eyebrow"><span class="dot"></span> Disponible aujourd'hui — Eaubonne &amp; environs (95)</div>
+      <h1>Un plombier <em>de confiance</em>,<br>pas une inconnue qui débarque.</h1>
+      <p class="lead">Fuite, panne de chauffe-eau, canalisation bouchée ou salle de bain à refaire — Shan Dogar intervient rapidement, avec un prix annoncé avant de commencer.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="tel:+33783338968">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Appeler maintenant
+        </a>
+        <a class="btn btn-ghost" href="#devis">Demander un devis gratuit</a>
+      </div>
+
+      <div class="diag reveal">
+        <div class="diag-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          C'est quoi le problème ? Cliquez pour voir le tarif.
+        </div>
+        <div class="chip-row" id="diagChips">
+          <div class="chip" data-service="urgence">💧 Ça fuite</div>
+          <div class="chip" data-service="debouchage">🚿 Ça s'écoule plus</div>
+          <div class="chip" data-service="chauffe-eau">🔥 Pas d'eau chaude</div>
+          <div class="chip" data-service="installation">🛁 Je veux installer un équipement</div>
+          <div class="chip" data-service="renovation">🧱 Je rénove ma salle de bain</div>
+        </div>
+        <div class="diag-result" id="diagResult"></div>
+      </div>
+
+      <div class="stat-strip">
+        <div>
+          <div class="stat-num">30min</div>
+          <div class="stat-label">Délai moyen d'intervention urgente</div>
+        </div>
+        <div>
+          <div class="stat-num">7j/7</div>
+          <div class="stat-label">Y compris soirs &amp; week-ends</div>
+        </div>
+        <div>
+          <div class="stat-num">0€</div>
+          <div class="stat-label">Devis toujours gratuit</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Nos interventions</h2>
+        <div class="section-tag">Tarifs indicatifs — devis exact après diagnostic</div>
+      </div>
+
+      <div class="tickets">
+        <div class="ticket urgent reveal" data-service="urgence">
+          <span class="ticket-badge">Urgence</span>
+          <div class="ticket-left">
+            <div class="ticket-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <div>
+              <div class="ticket-name">Dépannage urgent</div>
+              <div class="ticket-desc">Fuite active, dégât des eaux, panne totale</div>
+            </div>
+          </div>
+          <div class="ticket-leader"></div>
+          <div class="ticket-price">dès 80&nbsp;€</div>
+        </div>
+
+        <div class="ticket reveal" data-service="fuite">
+          <div class="ticket-left">
+            <div class="ticket-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 22a7 7 0 0 0 7-7c0-3-2-5-7-11-5 6-7 8-7 11a7 7 0 0 0 7 7z"/></svg>
+            </div>
+            <div>
+              <div class="ticket-name">Recherche &amp; réparation de fuite</div>
+              <div class="ticket-desc">Détection précise, sans casse inutile</div>
+            </div>
+          </div>
+          <div class="ticket-leader"></div>
+          <div class="ticket-price">dès 90&nbsp;€</div>
+        </div>
+
+        <div class="ticket reveal" data-service="debouchage">
+          <div class="ticket-left">
+            <div class="ticket-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
+            </div>
+            <div>
+              <div class="ticket-name">Débouchage de canalisation</div>
+              <div class="ticket-desc">Évier, douche, WC, colonne</div>
+            </div>
+          </div>
+          <div class="ticket-leader"></div>
+          <div class="ticket-price">dès 70&nbsp;€</div>
+        </div>
+
+        <div class="ticket reveal" data-service="installation">
+          <div class="ticket-left">
+            <div class="ticket-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="8" rx="1"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg>
+            </div>
+            <div>
+              <div class="ticket-name">Installation sanitaire</div>
+              <div class="ticket-desc">WC, lavabo, douche, robinetterie</div>
+            </div>
+          </div>
+          <div class="ticket-leader"></div>
+          <div class="ticket-price">dès 150&nbsp;€</div>
+        </div>
+
+        <div class="ticket reveal" data-service="chauffe-eau">
+          <div class="ticket-left">
+            <div class="ticket-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg>
+            </div>
+            <div>
+              <div class="ticket-name">Chauffe-eau — pose &amp; entretien</div>
+              <div class="ticket-desc">Électrique ou thermodynamique</div>
+            </div>
+          </div>
+          <div class="ticket-leader"></div>
+          <div class="ticket-price">dès 200&nbsp;€</div>
+        </div>
+
+        <div class="ticket reveal" data-service="renovation">
+          <div class="ticket-left">
+            <div class="ticket-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M5 12V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6M5 12v6h14v-6"/></svg>
+            </div>
+            <div>
+              <div class="ticket-name">Rénovation salle de bain complète</div>
+              <div class="ticket-desc">De la plomberie à la finition</div>
+            </div>
+          </div>
+          <div class="ticket-leader"></div>
+          <div class="ticket-price">sur devis</div>
+        </div>
+      </div>
+
+      <p class="price-note">💡 Tarifs à personnaliser selon vos prix réels avant mise en ligne — ce sont des exemples de départ.</p>
+    </div>
+  </section>
+
+  <section class="section" id="realisations" style="background:var(--paper-raised);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Réalisations</h2>
+        <div class="section-tag">Avant / après — chantiers récents</div>
+      </div>
+
+      <div class="gallery">
+        <div class="job-card reveal">
+          <div class="job-photo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+            <span class="swap-label">Photo à ajouter — chantier 1</span>
+          </div>
+          <div class="job-info">
+            <div class="job-title">Rénovation salle de bain</div>
+            <div class="job-loc">Eaubonne</div>
+          </div>
+        </div>
+        <div class="job-card reveal">
+          <div class="job-photo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+            <span class="swap-label">Photo à ajouter — chantier 2</span>
+          </div>
+          <div class="job-info">
+            <div class="job-title">Remplacement chauffe-eau</div>
+            <div class="job-loc">Ermont</div>
+          </div>
+        </div>
+        <div class="job-card reveal">
+          <div class="job-photo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+            <span class="swap-label">Photo à ajouter — chantier 3</span>
+          </div>
+          <div class="job-info">
+            <div class="job-title">Réparation fuite sous évier</div>
+            <div class="job-loc">Sannois</div>
+          </div>
+        </div>
+        <div class="job-card reveal">
+          <div class="job-photo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+            <span class="swap-label">Photo à ajouter — chantier 4</span>
+          </div>
+          <div class="job-info">
+            <div class="job-title">Installation WC suspendu</div>
+            <div class="job-loc">Saint-Gratien</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Pourquoi Shan Dogar</h2>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-item reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2 3 6v6c0 5 4 9 9 10 5-1 9-5 9-10V6l-9-4z"/></svg>
+          <h3>Prix annoncé avant travaux</h3>
+          <p>Pas de surprise sur la facture. Le tarif est validé avec vous avant toute intervention.</p>
+        </div>
+        <div class="trust-item reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <h3>Rapide, y compris en urgence</h3>
+          <p>Intervention le jour même dans la majorité des cas sur Eaubonne et les communes voisines.</p>
+        </div>
+        <div class="trust-item reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 12l2 2 4-4M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c1.5 0 3 .4 4.2 1"/></svg>
+          <h3>Travail garanti</h3>
+          <p>Chaque intervention est suivie — en cas de souci après le passage, on revient.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="booking" id="devis">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Demander une intervention</h2>
+        <div class="section-tag">Réponse rapide</div>
+      </div>
+
+      <div class="booking-grid">
+        <form class="form-card" id="bookingForm">
+          <div class="field">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" required placeholder="Votre nom">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="phone">Téléphone</label>
+              <input type="tel" id="phone" name="phone" required placeholder="06 12 34 56 78">
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="vous@exemple.fr">
+            </div>
+          </div>
+          <div class="field">
+            <label for="service">Type d'intervention</label>
+            <select id="service" name="service">
+              <option>Dépannage urgent</option>
+              <option>Recherche &amp; réparation de fuite</option>
+              <option>Débouchage de canalisation</option>
+              <option>Installation sanitaire</option>
+              <option>Chauffe-eau</option>
+              <option>Rénovation salle de bain</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="date">Date souhaitée</label>
+            <input type="date" id="date" name="date">
+          </div>
+          <div class="field">
+            <label for="message">Détails</label>
+            <textarea id="message" name="message" rows="4" placeholder="Décrivez le problème en quelques mots…"></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Envoyer la demande</button>
+          <p class="form-hint">Ouvre votre application mail avec le message pré-rempli, prêt à envoyer.</p>
+        </form>
+
+        <div class="contact-card">
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <div>
+              <span class="label">Téléphone</span>
+              <a href="tel:+33783338968">07 83 33 89 68</a>
+            </div>
+          </div>
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7 2v4h10V2"/></svg>
+            <div>
+              <span class="label">WhatsApp</span>
+              <a href="https://wa.me/33783338968" target="_blank" rel="noopener">Écrire directement</a>
+            </div>
+          </div>
+          <div class="contact-line">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div>
+              <span class="label">Zone d'intervention</span>
+              Eaubonne (95) &amp; environs
+            </div>
+          </div>
+
+          <div class="zone-box">
+            <strong>Communes couvertes :</strong> Eaubonne, Ermont, Sannois, Saint-Gratien, Enghien-les-Bains, Montmorency et alentours.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <strong>Shan Dogar Plomberie</strong> — Eaubonne (95), France · 07 83 33 89 68<br>
+      Devis gratuit · Intervention 7j/7
+    </div>
+  </footer>
+
+  <div class="mobile-call-bar">
+    <a class="call" href="tel:+33783338968">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Appeler
+    </a>
+    <a class="whats" href="https://wa.me/33783338968" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7 2v4h10V2"/></svg>
+      WhatsApp
+    </a>
+  </div>
+
+  <script>
+    document.getElementById('bookingForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const service = document.getElementById('service').value;
+      const date = document.getElementById('date').value;
+      const message = document.getElementById('message').value.trim();
+
+      const subject = encodeURIComponent('Demande de devis — ' + service);
+      const body = encodeURIComponent(
+        'Nom : ' + name + '\n' +
+        'Téléphone : ' + phone + '\n' +
+        'Email : ' + (email || '—') + '\n' +
+        'Service demandé : ' + service + '\n' +
+        'Date souhaitée : ' + (date || 'non précisée') + '\n\n' +
+        'Détails :\n' + (message || '—')
+      );
+
+      // Remplacer par l'adresse email réelle de Shan avant mise en ligne
+      window.location.href = 'mailto:contact@exemple.fr?subject=' + subject + '&body=' + body;
+    });
+
+    /* ---------- scroll reveal ---------- */
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.15});
+    revealEls.forEach((el,i)=>{
+      el.style.transitionDelay = (i % 6) * 60 + 'ms';
+      io.observe(el);
+    });
+
+    /* ---------- ripple effect on buttons ---------- */
+    document.querySelectorAll('.btn, .submit-btn, .call-pill').forEach(btn=>{
+      btn.addEventListener('click', function(e){
+        const rect = btn.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+        btn.appendChild(ripple);
+        setTimeout(()=> ripple.remove(), 600);
+      });
+    });
+
+    /* ---------- diagnostic symptom picker ---------- */
+    const diagInfo = {
+      urgence:      { label: "Ça fuite fort / dégât des eaux",  price: "dès 80 €",  note: "On dirait une urgence — mieux vaut appeler directement." },
+      fuite:        { label: "Fuite à réparer",                  price: "dès 90 €",  note: "Une recherche de fuite précise avant réparation." },
+      debouchage:   { label: "Canalisation bouchée",              price: "dès 70 €",  note: "Débouchage évier, douche, WC ou colonne." },
+      "chauffe-eau":{ label: "Chauffe-eau en panne",              price: "dès 200 €", note: "Diagnostic, réparation ou remplacement selon l'état." },
+      installation: { label: "Installation d'équipement",         price: "dès 150 €", note: "WC, lavabo, douche, robinetterie…" },
+      renovation:   { label: "Rénovation salle de bain",          price: "sur devis", note: "Un chiffrage précis après visite sur place." }
+    };
+
+    const chips = document.querySelectorAll('#diagChips .chip');
+    const resultBox = document.getElementById('diagResult');
+
+    chips.forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        chips.forEach(c=>c.classList.remove('active'));
+        chip.classList.add('active');
+
+        const key = chip.dataset.service;
+        const info = diagInfo[key] || diagInfo['urgence'];
+
+        resultBox.innerHTML =
+          '<span>' + info.note + ' — <strong>' + info.label + ', ' + info.price + '</strong></span>' +
+          '<a class="mini-btn" href="tel:+33783338968">Appeler</a>';
+        resultBox.classList.add('show');
+
+        // highlight the matching ticket
+        document.querySelectorAll('.ticket').forEach(t=>t.classList.remove('match'));
+        const target = document.querySelector('.ticket[data-service="' + key + '"]');
+        if(target){
+          target.classList.add('match');
+          setTimeout(()=>{
+            target.scrollIntoView({behavior:'smooth', block:'center'});
+          }, 350);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
