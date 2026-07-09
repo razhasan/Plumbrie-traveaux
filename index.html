@@ -898,16 +898,54 @@
     ];
 
     const photoStrip = document.getElementById('photoStrip');
+
+    function getFilenameVariants(file){
+      const dot = file.lastIndexOf('.');
+      const base = file.substring(0, dot);
+      const ext = file.substring(dot + 1);
+      const variants = [];
+      const add = (f) => { if(!variants.includes(f)) variants.push(f); };
+      add(file);
+      add(base + '.' + ext.toLowerCase());
+      add(base + '.' + ext.toUpperCase());
+      add(base.toLowerCase() + '.' + ext.toLowerCase());
+      add(base.toLowerCase() + '.' + ext.toUpperCase());
+      return variants;
+    }
+
+    function attachImageFallback(imgEl, file){
+      const candidates = getFilenameVariants(file);
+      let idx = 0;
+      imgEl.src = candidates[idx];
+      imgEl.onerror = function(){
+        idx++;
+        if(idx < candidates.length){
+          imgEl.src = candidates[idx];
+        } else {
+          imgEl.onerror = null;
+        }
+      };
+    }
+
     photos.forEach((p, i) => {
       const card = document.createElement('div');
       card.className = 'photo-card';
       card.dataset.index = i;
-      card.innerHTML =
-        '<div class="job-photo"><img src="' + p.file + '" alt="' + p.title + '" loading="lazy"></div>' +
-        '<div class="job-info">' +
-          '<div class="job-title">' + p.title + '</div>' +
-          '<div class="job-loc">' + p.loc + '</div>' +
-        '</div>';
+
+      const photoDiv = document.createElement('div');
+      photoDiv.className = 'job-photo';
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.alt = p.title;
+      attachImageFallback(img, p.file);
+      photoDiv.appendChild(img);
+
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'job-info';
+      infoDiv.innerHTML = '<div class="job-title">' + p.title + '</div><div class="job-loc">' + p.loc + '</div>';
+
+      card.appendChild(photoDiv);
+      card.appendChild(infoDiv);
       photoStrip.appendChild(card);
     });
 
@@ -926,7 +964,7 @@
     }
     function updateLightbox(){
       const p = photos[currentPhoto];
-      lightboxImg.src = p.file;
+      attachImageFallback(lightboxImg, p.file);
       lightboxImg.alt = p.title;
       lightboxTitle.textContent = p.title;
       lightboxLoc.textContent = p.loc;
@@ -981,18 +1019,19 @@
       const date = document.getElementById('date').value;
       const message = document.getElementById('message').value.trim();
 
-      const subject = encodeURIComponent('Demande de devis — ' + serviceLabel);
+      const subject = encodeURIComponent('Devis — ' + serviceLabel);
       const body = encodeURIComponent(
-        'Nom : ' + name + '\n' +
-        'Téléphone : ' + phone + '\n' +
-        'Email : ' + (email || '—') + '\n' +
-        'Service demandé : ' + serviceLabel + '\n' +
-        'Date souhaitée : ' + (date || 'non précisée') + '\n\n' +
-        'Détails :\n' + (message || '—')
+        name + ' — ' + phone + (email ? ' — ' + email : '') + '\n' +
+        serviceLabel + (date ? ' — ' + date : '') + '\n' +
+        (message || '')
       );
 
       // Remplacer par l'adresse email réelle de Jordan avant mise en ligne
-      window.location.href = 'mailto:contact@exemple.fr?subject=' + subject + '&body=' + body;
+      const mailLink = document.createElement('a');
+      mailLink.href = 'mailto:contact@exemple.fr?subject=' + subject + '&body=' + body;
+      document.body.appendChild(mailLink);
+      mailLink.click();
+      mailLink.remove();
     });
 
     /* ---------- scroll reveal ---------- */
