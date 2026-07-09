@@ -349,6 +349,93 @@
   .job-title{font-weight:700;font-size:14.5px;color:var(--ink);}
   .job-loc{font-size:12px;color:var(--ink-soft);margin-top:2px;}
 
+  /* -------- photo strip (scrollable gallery) -------- */
+  .photo-strip{
+    display:flex;
+    gap:16px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    padding-bottom:12px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    scrollbar-color:var(--blue) var(--paper);
+  }
+  .photo-strip::-webkit-scrollbar{height:8px;}
+  .photo-strip::-webkit-scrollbar-track{background:var(--paper);border-radius:4px;}
+  .photo-strip::-webkit-scrollbar-thumb{background:var(--blue);border-radius:4px;}
+  .photo-card{
+    flex:0 0 auto;
+    width:min(78vw,300px);
+    scroll-snap-align:start;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    cursor:pointer;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .photo-card:hover{transform:translateY(-5px);box-shadow:0 14px 28px rgba(38,38,90,0.1);}
+  .photo-card .job-photo{aspect-ratio:4/3;background:#E7EEF6;overflow:hidden;}
+  .photo-card .job-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+
+  /* -------- lightbox -------- */
+  .lightbox{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(20,22,40,0.94);
+    display:none;
+    align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox-inner{
+    max-width:min(920px,92vw);
+    width:100%;
+    text-align:center;
+  }
+  .lightbox-inner img{
+    max-width:100%;
+    max-height:70vh;
+    margin:0 auto;
+    border-radius:10px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.5);
+  }
+  .lightbox-caption{color:#fff;margin-top:16px;}
+  .lightbox-caption .job-title{color:#fff;font-size:16px;}
+  .lightbox-caption .job-loc{color:rgba(255,255,255,0.7);}
+  .lightbox-counter{
+    color:rgba(255,255,255,0.6);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    margin-top:8px;
+  }
+  .lightbox-close{
+    position:absolute;top:18px;right:24px;
+    width:42px;height:42px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.1);
+    border:none;color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;
+  }
+  .lightbox-close:hover{background:rgba(255,255,255,0.2);}
+  .lightbox-arrow{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:48px;height:48px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.1);
+    border:none;color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:22px;
+  }
+  .lightbox-arrow:hover{background:rgba(255,255,255,0.2);}
+  .lightbox-arrow.prev{left:16px;}
+  .lightbox-arrow.next{right:16px;}
+  .lightbox-arrow svg{width:22px;height:22px;}
+  @media (max-width:640px){
+    .lightbox-arrow{width:38px;height:38px;}
+    .lightbox-close{top:10px;right:12px;}
+  }
+
   /* -------- booking -------- */
   .booking{background:#fff;padding:56px 0 64px;border-top:1px solid var(--line);}
   .booking-grid{display:grid;grid-template-columns:1fr;gap:32px;}
@@ -671,50 +758,27 @@
         <div class="head-accent"></div>
       </div>
 
-      <div class="gallery">
-        <div class="job-card reveal">
-          <div class="job-photo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span class="swap-label">Photo à ajouter — chantier 1</span>
-          </div>
-          <div class="job-info">
-            <div class="job-title">Rénovation salle de bain</div>
-            <div class="job-loc">Eaubonne</div>
-          </div>
-        </div>
-        <div class="job-card reveal">
-          <div class="job-photo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span class="swap-label">Photo à ajouter — chantier 2</span>
-          </div>
-          <div class="job-info">
-            <div class="job-title">Remplacement chauffe-eau</div>
-            <div class="job-loc">Ermont</div>
-          </div>
-        </div>
-        <div class="job-card reveal">
-          <div class="job-photo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span class="swap-label">Photo à ajouter — chantier 3</span>
-          </div>
-          <div class="job-info">
-            <div class="job-title">Réparation fuite sous évier</div>
-            <div class="job-loc">Sannois</div>
-          </div>
-        </div>
-        <div class="job-card reveal">
-          <div class="job-photo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-            <span class="swap-label">Photo à ajouter — chantier 4</span>
-          </div>
-          <div class="job-info">
-            <div class="job-title">Installation WC suspendu</div>
-            <div class="job-loc">Saint-Gratien</div>
-          </div>
-        </div>
-      </div>
+      <div class="photo-strip reveal" id="photoStrip"></div>
     </div>
   </section>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Fermer">&times;</button>
+    <button class="lightbox-arrow prev" id="lightboxPrev" aria-label="Photo précédente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="lightbox-arrow next" id="lightboxNext" aria-label="Photo suivante">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <div class="lightbox-inner">
+      <img id="lightboxImg" src="" alt="">
+      <div class="lightbox-caption">
+        <div class="job-title" id="lightboxTitle"></div>
+        <div class="job-loc" id="lightboxLoc"></div>
+      </div>
+      <div class="lightbox-counter" id="lightboxCounter"></div>
+    </div>
+  </div>
 
   <section class="booking" id="devis">
     <div class="wrap">
@@ -821,6 +885,82 @@
   </div>
 
   <script>
+    /* ---------- réalisations : photos ---------- */
+    const photos = [
+      { file: "Image1.JPG", title: "Rénovation salle de bain — vasque et douche à l'italienne", loc: "Eaubonne" },
+      { file: "Image2.JPG", title: "Salle de bain terminée — sol en marbre", loc: "Ermont" },
+      { file: "Image3.JPG", title: "Installation chauffe-eau", loc: "Sannois" },
+      { file: "Image5.JPG", title: "Remplacement chauffe-eau", loc: "Saint-Gratien" },
+      { file: "Image6.JPG", title: "Chauffe-eau installé au-dessus du lave-linge", loc: "Enghien-les-Bains" },
+      { file: "Image4.JPG", title: "Reprise de canalisations en cuivre", loc: "Montmorency" },
+      { file: "Image7.JPG", title: "Intervention sur gaine technique enterrée", loc: "Eaubonne" },
+      { file: "Image8.JPG", title: "Regard technique — pompe de relevage", loc: "Ermont" }
+    ];
+
+    const photoStrip = document.getElementById('photoStrip');
+    photos.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'photo-card';
+      card.dataset.index = i;
+      card.innerHTML =
+        '<div class="job-photo"><img src="' + p.file + '" alt="' + p.title + '" loading="lazy"></div>' +
+        '<div class="job-info">' +
+          '<div class="job-title">' + p.title + '</div>' +
+          '<div class="job-loc">' + p.loc + '</div>' +
+        '</div>';
+      photoStrip.appendChild(card);
+    });
+
+    /* ---------- lightbox ---------- */
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxLoc = document.getElementById('lightboxLoc');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    let currentPhoto = 0;
+
+    function openLightbox(index){
+      currentPhoto = index;
+      updateLightbox();
+      lightbox.classList.add('open');
+    }
+    function updateLightbox(){
+      const p = photos[currentPhoto];
+      lightboxImg.src = p.file;
+      lightboxImg.alt = p.title;
+      lightboxTitle.textContent = p.title;
+      lightboxLoc.textContent = p.loc;
+      lightboxCounter.textContent = (currentPhoto + 1) + ' / ' + photos.length;
+    }
+    function closeLightbox(){ lightbox.classList.remove('open'); }
+    function showPrev(){ currentPhoto = (currentPhoto - 1 + photos.length) % photos.length; updateLightbox(); }
+    function showNext(){ currentPhoto = (currentPhoto + 1) % photos.length; updateLightbox(); }
+
+    photoStrip.addEventListener('click', (e)=>{
+      const card = e.target.closest('.photo-card');
+      if(card) openLightbox(Number(card.dataset.index));
+    });
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', showPrev);
+    document.getElementById('lightboxNext').addEventListener('click', showNext);
+    lightbox.addEventListener('click', (e)=>{
+      if(e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(!lightbox.classList.contains('open')) return;
+      if(e.key === 'Escape') closeLightbox();
+      if(e.key === 'ArrowLeft') showPrev();
+      if(e.key === 'ArrowRight') showNext();
+    });
+
+    /* swipe support on lightbox (mobile) */
+    let touchStartX = 0;
+    lightbox.addEventListener('touchstart', (e)=>{ touchStartX = e.changedTouches[0].screenX; });
+    lightbox.addEventListener('touchend', (e)=>{
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if(Math.abs(dx) > 40){ dx > 0 ? showPrev() : showNext(); }
+    });
+
     const serviceMeta = {
       urgence:      { label: "Dépannage urgent",                 example: "J'ai une fuite active / un dégât des eaux en cours, j'ai besoin d'une intervention rapide." },
       fuite:        { label: "Recherche & réparation de fuite",   example: "Je pense avoir une fuite (trace d'humidité, bruit d'eau…) mais je n'arrive pas à la localiser précisément." },
