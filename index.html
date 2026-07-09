@@ -598,7 +598,7 @@
       </div>
 
       <div class="services-grid">
-        <div class="svc-card urgent reveal">
+        <div class="svc-card urgent reveal" data-service="urgence">
           <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
           <div class="svc-title">Dépannage urgent</div>
           <div class="svc-desc">Fuite active, dégât des eaux, panne totale — intervention rapide.</div>
@@ -608,7 +608,7 @@
           </div>
         </div>
 
-        <div class="svc-card reveal">
+        <div class="svc-card reveal" data-service="fuite">
           <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 22a7 7 0 0 0 7-7c0-3-2-5-7-11-5 6-7 8-7 11a7 7 0 0 0 7 7z"/></svg></div>
           <div class="svc-title">Recherche &amp; réparation de fuite</div>
           <div class="svc-desc">Détection précise, sans casse inutile.</div>
@@ -618,7 +618,7 @@
           </div>
         </div>
 
-        <div class="svc-card reveal">
+        <div class="svc-card reveal" data-service="debouchage">
           <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div>
           <div class="svc-title">Débouchage de canalisation</div>
           <div class="svc-desc">Évier, douche, WC, colonne.</div>
@@ -628,7 +628,7 @@
           </div>
         </div>
 
-        <div class="svc-card reveal">
+        <div class="svc-card reveal" data-service="installation">
           <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="8" rx="1"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg></div>
           <div class="svc-title">Installation sanitaire</div>
           <div class="svc-desc">WC, lavabo, douche, robinetterie.</div>
@@ -638,7 +638,7 @@
           </div>
         </div>
 
-        <div class="svc-card reveal">
+        <div class="svc-card reveal" data-service="chauffe-eau">
           <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 8h6M9 12h6"/></svg></div>
           <div class="svc-title">Chauffe-eau — pose &amp; entretien</div>
           <div class="svc-desc">Électrique ou thermodynamique.</div>
@@ -648,7 +648,7 @@
           </div>
         </div>
 
-        <div class="svc-card reveal">
+        <div class="svc-card reveal" data-service="renovation">
           <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M5 12V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6M5 12v6h14v-6"/></svg></div>
           <div class="svc-title">Rénovation salle de bain complète</div>
           <div class="svc-desc">De la plomberie à la finition.</div>
@@ -743,13 +743,13 @@
           <div class="field">
             <label for="service">Type d'intervention</label>
             <select id="service" name="service">
-              <option>Dépannage urgent</option>
-              <option>Recherche &amp; réparation de fuite</option>
-              <option>Débouchage de canalisation</option>
-              <option>Installation sanitaire</option>
-              <option>Chauffe-eau</option>
-              <option>Rénovation salle de bain</option>
-              <option>Autre</option>
+              <option value="urgence">Dépannage urgent</option>
+              <option value="fuite">Recherche &amp; réparation de fuite</option>
+              <option value="debouchage">Débouchage de canalisation</option>
+              <option value="installation">Installation sanitaire</option>
+              <option value="chauffe-eau">Chauffe-eau</option>
+              <option value="renovation">Rénovation salle de bain</option>
+              <option value="autre">Autre</option>
             </select>
           </div>
           <div class="field">
@@ -821,21 +821,32 @@
   </div>
 
   <script>
+    const serviceMeta = {
+      urgence:      { label: "Dépannage urgent",                 example: "J'ai une fuite active / un dégât des eaux en cours, j'ai besoin d'une intervention rapide." },
+      fuite:        { label: "Recherche & réparation de fuite",   example: "Je pense avoir une fuite (trace d'humidité, bruit d'eau…) mais je n'arrive pas à la localiser précisément." },
+      debouchage:   { label: "Débouchage de canalisation",        example: "Mon évier / ma douche / mes WC s'écoulent très lentement ou plus du tout." },
+      installation: { label: "Installation sanitaire",            example: "Je souhaite faire installer un WC / un lavabo / une douche neuve." },
+      "chauffe-eau":{ label: "Chauffe-eau",                        example: "Mon chauffe-eau ne chauffe plus / fuit / fait un bruit anormal." },
+      renovation:   { label: "Rénovation salle de bain",           example: "Je souhaite refaire entièrement ma salle de bain, je cherche un devis complet." },
+      autre:        { label: "Autre",                              example: "Décrivez ici votre besoin en quelques mots." }
+    };
+
     document.getElementById('bookingForm').addEventListener('submit', function(e){
       e.preventDefault();
       const name = document.getElementById('name').value.trim();
       const phone = document.getElementById('phone').value.trim();
       const email = document.getElementById('email').value.trim();
-      const service = document.getElementById('service').value;
+      const serviceKey = document.getElementById('service').value;
+      const serviceLabel = (serviceMeta[serviceKey] && serviceMeta[serviceKey].label) || serviceKey;
       const date = document.getElementById('date').value;
       const message = document.getElementById('message').value.trim();
 
-      const subject = encodeURIComponent('Demande de devis — ' + service);
+      const subject = encodeURIComponent('Demande de devis — ' + serviceLabel);
       const body = encodeURIComponent(
         'Nom : ' + name + '\n' +
         'Téléphone : ' + phone + '\n' +
         'Email : ' + (email || '—') + '\n' +
-        'Service demandé : ' + service + '\n' +
+        'Service demandé : ' + serviceLabel + '\n' +
         'Date souhaitée : ' + (date || 'non précisée') + '\n\n' +
         'Détails :\n' + (message || '—')
       );
@@ -871,6 +882,28 @@
         ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
         btn.appendChild(ripple);
         setTimeout(()=> ripple.remove(), 600);
+      });
+    });
+
+    /* ---------- service card arrow -> jump to form, preselect service, prefill example ---------- */
+    document.querySelectorAll('.svc-card[data-service]').forEach(card=>{
+      const arrow = card.querySelector('.svc-arrow');
+      if(!arrow) return;
+      arrow.style.cursor = 'pointer';
+      arrow.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const key = card.dataset.service;
+        const meta = serviceMeta[key];
+        const serviceSelect = document.getElementById('service');
+        const messageBox = document.getElementById('message');
+
+        if(serviceSelect){ serviceSelect.value = key; }
+        if(messageBox && meta){
+          messageBox.value = 'Exemple à modifier : ' + meta.example;
+        }
+
+        document.getElementById('devis').scrollIntoView({behavior:'smooth', block:'start'});
+        setTimeout(()=>{ document.getElementById('name').focus(); }, 500);
       });
     });
 
