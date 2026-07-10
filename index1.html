@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Préparation Examen CM2 → 6ème - Institut Saint-Joseph</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #1a2a3a;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a3a6b;
+            font-size: 28px;
+            border-bottom: 4px solid #f0c040;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        h1 small {
+            font-size: 16px;
+            font-weight: normal;
+            color: #4a6a8a;
+        }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #dde4ec;
+            padding-bottom: 4px;
+        }
+        .tab-btn {
+            padding: 10px 24px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-weight: 600;
+            color: #4a6a8a;
+            cursor: pointer;
+            border-radius: 12px 12px 0 0;
+            transition: 0.2s;
+        }
+        .tab-btn:hover { background: #e8edf4; }
+        .tab-btn.active {
+            background: #1a3a6b;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+        /* ===== QUESTIONS ===== */
+        .question-block {
+            background: #f8faff;
+            padding: 18px 22px;
+            margin-bottom: 16px;
+            border-radius: 14px;
+            border-left: 6px solid #1a3a6b;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .question-block .q-title {
+            font-weight: 700;
+            color: #1a3a6b;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+        .question-block .q-text {
+            font-size: 17px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .question-block .q-options label {
+            display: block;
+            padding: 6px 12px;
+            margin: 4px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-size: 16px;
+            border: 2px solid transparent;
+        }
+        .question-block .q-options label:hover {
+            background: #e8edf4;
+        }
+        .question-block .q-options input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.1);
+        }
+        .question-block.correct { border-left-color: #2a9d8f; background: #f0faf8; }
+        .question-block.wrong { border-left-color: #e76f51; background: #fdf4f0; }
+        .question-block .explanation {
+            margin-top: 8px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #eef2f7;
+            font-size: 14px;
+            display: none;
+        }
+        .question-block .explanation.show { display: block; }
+
+        /* ===== SCORE ===== */
+        .score-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+            background: #e8edf4;
+            padding: 18px 24px;
+            border-radius: 16px;
+            margin: 20px 0;
+        }
+        .score-panel .score-item {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .score-panel .score-item span {
+            font-weight: 800;
+            font-size: 24px;
+        }
+        .score-panel .score-item .green { color: #2a9d8f; }
+        .score-panel .score-item .red { color: #e76f51; }
+        .score-panel .score-item .gold { color: #f0a030; }
+
+        .placement-box {
+            background: #1a3a6b;
+            color: white;
+            padding: 16px 22px;
+            border-radius: 14px;
+            text-align: center;
+            margin: 16px 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .placement-box .level { font-size: 28px; }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-block;
+            margin: 6px 6px 6px 0;
+        }
+        .btn-primary { background: #1a3a6b; color: white; }
+        .btn-primary:hover { background: #0f2a4f; transform: scale(1.02); }
+        .btn-success { background: #2a9d8f; color: white; }
+        .btn-success:hover { background: #1e7a6e; }
+        .btn-warning { background: #f0a030; color: #1a2a3a; }
+        .btn-warning:hover { background: #d48c20; }
+        .btn-outline { background: transparent; color: #1a3a6b; border: 2px solid #1a3a6b; }
+        .btn-outline:hover { background: #e8edf4; }
+        .btn-danger { background: #e76f51; color: white; }
+        .btn-danger:hover { background: #c45a3e; }
+
+        /* ===== REVISION ===== */
+        .revision-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .revision-card {
+            background: #f8faff;
+            padding: 18px 22px;
+            border-radius: 16px;
+            border: 1px solid #dde4ec;
+        }
+        .revision-card h3 {
+            color: #1a3a6b;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #f0c040;
+            padding-bottom: 6px;
+        }
+        .revision-card ul {
+            list-style: none;
+            padding-left: 6px;
+        }
+        .revision-card li {
+            padding: 4px 0;
+            font-size: 15px;
+            border-bottom: 1px solid #eef2f7;
+        }
+        .revision-card li strong { color: #1a3a6b; }
+
+        /* ===== TIMER & PROGRESS ===== */
+        .timer-bar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            padding: 12px 18px;
+            background: #eef2f7;
+            border-radius: 12px;
+        }
+        .timer-bar .timer {
+            font-size: 26px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            color: #1a3a6b;
+        }
+        .timer-bar .progress {
+            flex: 1;
+            height: 10px;
+            background: #dde4ec;
+            border-radius: 6px;
+            overflow: hidden;
+            min-width: 100px;
+        }
+        .timer-bar .progress .fill {
+            height: 100%;
+            background: #2a9d8f;
+            transition: width 0.3s;
+            width: 0%;
+        }
+        .timer-bar .progress-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #4a6a8a;
+            min-width: 60px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .container { padding: 16px; }
+            h1 { font-size: 22px; }
+            .revision-section { grid-template-columns: 1fr; }
+            .score-panel { flex-direction: column; gap: 8px; }
+            .question-block { padding: 14px; }
+            .btn { padding: 10px 20px; font-size: 15px; }
+            .tab-btn { padding: 8px 16px; font-size: 14px; }
+        }
+        @media print {
+            .btn, .tab-btn, .timer-bar { display: none !important; }
+            .container { box-shadow: none; padding: 10px; }
+            .question-block { break-inside: avoid; }
+        }
+
+        /* ===== UTILITY ===== */
+        .mt-12 { margin-top: 12px; }
+        .mb-12 { margin-bottom: 12px; }
+        .flex-center { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .text-center { text-align: center; }
+        .hidden { display: none !important; }
+        .w100 { width: 100%; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+    <!-- HEADER -->
+    <h1>
+        📚 Examen Blanc CM2 → 6ème
+        <small>Institut Saint-Joseph du Moncel</small>
+    </h1>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="exam">📝 Examen</button>
+        <button class="tab-btn" data-tab="revision">📖 Réviser</button>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- TAB 1 : EXAMEN -->
+    <!-- ============================================ -->
+    <div class="tab-content active" id="tab-exam">
+
+        <!-- TIMER & PROGRESS -->
+        <div class="timer-bar">
+            <div class="timer" id="timerDisplay">45:00</div>
+            <div class="progress"><div class="fill" id="progressFill"></div></div>
+            <div class="progress-text" id="progressText">0 / 40</div>
+            <div>
+                <button class="btn btn-outline" onclick="toggleTimer()" style="padding:6px 14px;font-size:14px;">⏸️</button>
+                <button class="btn btn-outline" onclick="resetTimer()" style="padding:6px 14px;font-size:14px;">↺</button>
+            </div>
+        </div>
+
+        <!-- PLACEMENT SIMULATION (hidden until scored) -->
+        <div id="placementBox" class="placement-box hidden">
+            <div>🎯 Résultat estimé</div>
+            <div class="level" id="placementLevel">--</div>
+            <div id="placementDetail" style="font-size:16px;font-weight:400;margin-top:4px;"></div>
+        </div>
+
+        <!-- SCORE PANEL -->
+        <div class="score-panel" id="scorePanel">
+            <div class="score-item">🇫🇷 Français : <span id="scoreFrench" class="gold">0</span>/20</div>
+            <div class="score-item">🔢 Maths : <span id="scoreMath" class="gold">0</span>/20</div>
+            <div class="score-item">📊 Total : <span id="scoreTotal" class="gold">0</span>/40</div>
+            <div>
+                <button class="btn btn-success" onclick="corrigerExamen()">✔️ Corriger</button>
+                <button class="btn btn-warning" onclick="genererExamen()">🔄 Nouvel examen</button>
+                <button class="btn btn-outline" onclick="imprimerExamen()">🖨️ Imprimer</button>
+            </div>
+        </div>
+
+        <!-- QUESTIONS CONTAINER -->
+        <div id="questionsContainer"></div>
+
+        <!-- BOTTOM BUTTONS -->
+        <div class="flex-center mt-12">
+            <button class="btn btn-success" onclick="corrigerExamen()">✔️ Corriger l'examen</button>
+            <button class="btn btn-warning" onclick="genererExamen()">🔄 Nouvel examen</button>
+        </div>
+        <p style="font-size:13px;color:#6a8aaa;margin-top:12px;text-align:center;">
+            💡 Les questions changent à chaque nouvel examen. Entraînez-vous autant que vous voulez !
+        </p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- TAB 2 : RÉVISION -->
+    <!-- ============================================ -->
+    <div class="tab-content" id="tab-revision">
+        <h2 style="color:#1a3a6b;margin-bottom:16px;">📖 Révisions express – CM2 vers 6ème</h2>
+
+        <div class="revision-section">
+            <!-- Français -->
+            <div class="revision-card">
+                <h3>🇫🇷 Français – Essentiel</h3>
+                <ul>
+                    <li><strong>Présent :</strong> je mange, tu manges, il/elle mange, nous mangeons, vous mangez, ils/elles mangent</li>
+                    <li><strong>Futur :</strong> je mangerai, tu mangeras, il/elle mangera, nous mangerons, vous mangerez, ils/elles mangeront</li>
+                    <li><strong>Imparfait :</strong> je mangeais, tu mangeais, il/elle mangeait, nous mangions, vous mangiez, ils/elles mangeaient</li>
+                    <li><strong>Passé composé :</strong> j'ai mangé, tu as mangé, il/elle a mangé, nous avons mangé, vous avez mangé, ils/elles ont mangé</li>
+                    <li><strong>Accord du participe passé :</strong> avec <em>être</em> → accord avec le sujet ; avec <em>avoir</em> → accord avec COD placé avant</li>
+                    <li><strong>Nature des mots :</strong> nom, verbe, adjectif, déterminant, pronom, adverbe, préposition, conjonction</li>
+                    <li><strong>Fonctions :</strong> sujet, verbe, complément d'objet direct (COD), complément d'objet indirect (COI), complément circonstanciel</li>
+                </ul>
+            </div>
+            <!-- Maths -->
+            <div class="revision-card">
+                <h3>🔢 Maths – Essentiel</h3>
+                <ul>
+                    <li><strong>Addition :</strong> poser les chiffres alignés par la droite, retenues</li>
+                    <li><strong>Soustraction :</strong> poser aligné par la droite, emprunts</li>
+                    <li><strong>Multiplication :</strong> poser, multiplier par chaque chiffre, additionner les résultats partiels</li>
+                    <li><strong>Division :</strong> dividende ÷ diviseur = quotient, reste possible</li>
+                    <li><strong>Fractions :</strong> ½ = 0,5 ; ¼ = 0,25 ; ¾ = 0,75 ; additionner avec même dénominateur</li>
+                    <li><strong>Décimaux :</strong> 3,5 + 2,8 → additionner les dixièmes (5+8=13 → 1 unité + 3 dixièmes)</li>
+                    <li><strong>Conversions :</strong> 1 km = 1000 m ; 1 m = 100 cm ; 1 kg = 1000 g ; 1 L = 100 cL = 1000 mL</li>
+                    <li><strong>Périmètre :</strong> rectangle = 2×(L+l) ; carré = 4×côté</li>
+                    <li><strong>Aire :</strong> rectangle = L×l ; carré = côté×côté</li>
+                </ul>
+            </div>
+            <!-- Pièges à éviter -->
+            <div class="revision-card">
+                <h3>⚠️ Pièges fréquents</h3>
+                <ul>
+                    <li><strong>Accords :</strong> "Les enfants jouent" (pas "joue") – sujet pluriel = verbe pluriel</li>
+                    <li><strong>Homophones :</strong> "à" (préposition) vs "a" (avoir) ; "et" (conjonction) vs "est" (être) ; "on" (pronom) vs "ont" (avoir)</li>
+                    <li><strong>Fractions :</strong> ne pas oublier de mettre au même dénominateur avant d'additionner</li>
+                    <li><strong>Décimaux :</strong> 3,5 + 2,8 = 6,3 (pas 7,3 !)</li>
+                    <li><strong>Conjugaison :</strong> "nous mangeons" (garder le 'e') ; "ils mangent" (pas "mangent" avec un 't' supplémentaire)</li>
+                </ul>
+            </div>
+            <!-- Conseils examen -->
+            <div class="revision-card">
+                <h3>🧠 Conseils pour demain</h3>
+                <ul>
+                    <li>📖 Lis bien chaque <strong>question 2 fois</strong> avant de répondre</li>
+                    <li>✏️ Si tu hésites, <strong>élimine</strong> les réponses qui sont clairement fausses</li>
+                    <li>⏱️ <strong>Gère ton temps</strong> : 45 min pour 40 questions → 1 min par question environ</li>
+                    <li>🔢 En maths, <strong>pose les calculs</strong> sur le brouillon, ne fais pas tout de tête</li>
+                    <li>📝 En français, <strong>relis-toi</strong> pour vérifier les accords</li>
+                    <li>😌 <strong>Respire</strong> et reste calme – tu es prêt(e) !</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ===== JAVASCRIPT ===== -->
+<!-- ============================================ -->
+<script>
+    // ============================================================
+    // 1. DATA – Banques de questions (CM2 → 6ème)
+    // ============================================================
+    const banqueFrancais = [
+        // Grammaire - Sujet / Verbe
+        {
+            categorie: 'Grammaire',
+            question: 'Dans la phrase "Les grands chiens courent dans le parc.", quel est le sujet ?',
+            options: ['Les grands chiens', 'courent', 'dans le parc', 'grands chiens'],
+            reponse: 0,
+            explication: 'Le sujet est "Les grands chiens" car c\'est ce qui fait l\'action de courir.'
+        },
+        {
+            categorie: 'Grammaire',
+            question: 'Dans la phrase "Marie et Julie chantent une chanson.", quel est le verbe ?',
+            options: ['Marie et Julie', 'chantent', 'une chanson', 'chantent une chanson'],
+            reponse: 1,
+            explication: 'Le verbe est "chantent" car c\'est l\'action réalisée par le sujet.'
+        },
+        {
+            categorie: 'Grammaire',
+            question: 'Dans "Le petit chat noir dort sur le canapé.", quel est le complément circonstanciel ?',
+            options: ['Le petit chat noir', 'dort', 'sur le canapé', 'noir'],
+            reponse: 2,
+            explication: '"sur le canapé" est un complément circonstanciel de lieu.'
+        },
+        // Nature des mots
+        {
+            categorie: 'Nature',
+            question: 'Quelle est la nature du mot "manger" dans la phrase : "J\'aime manger des fruits" ?',
+            options: ['Nom', 'Verbe', 'Adjectif', 'Adverbe'],
+            reponse: 1,
+            explication: '"manger" est un verbe à l\'infinitif.'
+        },
+        {
+            categorie: 'Nature',
+            question: 'Quelle est la nature du mot "grand" dans "un grand arbre" ?',
+            options: ['Nom', 'Verbe', 'Adjectif', 'Déterminant'],
+            reponse: 2,
+            explication: '"grand" est un adjectif qualificatif.'
+        },
+        {
+            categorie: 'Nature',
+            question: 'Quelle est la nature du mot "soudainement" ?',
+            options: ['Nom', 'Adjectif', 'Adverbe', 'Préposition'],
+            reponse: 2,
+            explication: '"soudainement" est un adverbe qui modifie un verbe.'
+        },
+        // Conjugaison - Présent
+        {
+            categorie: 'Conjugaison',
+            question: 'Conjugue le verbe "finir" au présent avec "nous" :',
+            options: ['Nous finissons', 'Nous finons', 'Nous finissons', 'Nous finirons'],
+            reponse: 0,
+            explication: 'Le verbe "finir" au présent : nous finissons.'
+        },
+        {
+            categorie: 'Conjugaison',
+            question: 'Conjugue le verbe "aller" au présent avec "ils" :',
+            options: ['ils vont', 'ils allent', 'ils vas', 'ils vont'],
+            reponse: 0,
+            explication: 'Le verbe "aller" au présent : ils vont.'
+        },
+        // Futur
+        {
+            categorie: 'Conjugaison',
+            question: 'Conjugue le verbe "être" au futur avec "je" :',
+            options: ['je serai', 'je suis', 'j\'étais', 'je serais'],
+            reponse: 0,
+            explication: 'Le futur de "être" : je serai, tu seras, il sera, nous serons, vous serez, ils seront.'
+        },
+        {
+            categorie: 'Conjugaison',
+            question: 'Conjugue le verbe "avoir" au futur avec "ils" :',
+            options: ['ils ont', 'ils auront', 'ils avaient', 'ils auront'],
+            reponse: 1,
+            explication: 'Le futur de "avoir" : ils auront.'
+        },
+        // Imparfait
+        {
+            categorie: 'Conjugaison',
+            question: 'Conjugue le verbe "chanter" à l\'imparfait avec "je" :',
+            options: ['je chantais', 'je chante', 'je chanterai', 'je chantais'],
+            reponse: 0,
+            explication: 'L\'imparfait de "chanter" : je chantais.'
+        },
+        {
+            categorie: 'Conjugaison',
+            question: 'Conjugue le verbe "faire" à l\'imparfait avec "vous" :',
+            options: ['vous faites', 'vous faisiez', 'vous ferez', 'vous faisiez'],
+            reponse: 1,
+            explication: 'L\'imparfait de "faire" : vous faisiez.'
+        },
+        // Passé composé
+        {
+            categorie: 'Conjugaison',
+            question: 'Conjugue le verbe "partir" au passé composé avec "elle" :',
+            options: ['elle a parti', 'elle est partie', 'elle a parté', 'elle est parti'],
+            reponse: 1,
+            explication: 'Passé composé de "partir" avec être : elle est partie (accord).'
+        },
+        {
+            categorie: 'Conjugaison',
+            question: 'Conjugue le verbe "manger" au passé composé avec "nous" :',
+            options: ['nous avons mangé', 'nous avons mangés', 'nous sommes mangé', 'nous avons manger'],
+            reponse: 0,
+            explication: 'Passé composé de "manger" avec avoir : nous avons mangé (pas d\'accord car COD après).'
+        },
+        // Orthographe
+        {
+            categorie: 'Orthographe',
+            question: 'Choisis la phrase correctement écrite :',
+            options: ['Les enfant joue dans la cour.', 'Les enfants jouent dans la cour.', 'Les enfants joue dans la cour.', 'Les enfant jouent dans la cour.'],
+            reponse: 1,
+            explication: 'Sujet pluriel "Les enfants" → verbe "jouent" au pluriel.'
+        },
+        {
+            categorie: 'Orthographe',
+            question: 'Choisis la phrase correctement écrite :',
+            options: ['Il a mangé une pomme.', 'Il à mangé une pomme.', 'Il a manger une pomme.', 'Il à manger une pomme.'],
+            reponse: 0,
+            explication: '"a" est le verbe avoir (passé composé) ; "à" est une préposition.'
+        },
+        // Vocabulaire - synonymes
+        {
+            categorie: 'Vocabulaire',
+            question: 'Quel est le synonyme de "rapide" ?',
+            options: ['Lent', 'Vite', 'Grand', 'Petit'],
+            reponse: 1,
+            explication: '"rapide" signifie "vite".'
+        },
+        {
+            categorie: 'Vocabulaire',
+            question: 'Quel est l\'antonyme de "chaud" ?',
+            options: ['Tiède', 'Froid', 'Brûlant', 'Glacé'],
+            reponse: 1,
+            explication: 'L\'antonyme de "chaud" est "froid".'
+        },
+        // Ponctuation
+        {
+            categorie: 'Ponctuation',
+            question: 'Quelle ponctuation utilise-t-on à la fin d\'une question ?',
+            options: ['.', '!', '?', '...'],
+            reponse: 2,
+            explication: 'On utilise le point d\'interrogation "?" pour une question.'
+        },
+        {
+            categorie: 'Ponctuation',
+            question: 'Quelle ponctuation utilise-t-on pour exprimer une forte émotion ?',
+            options: ['.', '!', '?', ';'],
+            reponse: 1,
+            explication: 'Le point d\'exclamation "!" exprime une forte émotion.'
+        },
+        // Compréhension
+        {
+            categorie: 'Compréhension',
+            question: 'Texte : "Le petit oiseau bleu s\'est posé sur la branche. Il regardait les passants avec curiosité." Que fait l\'oiseau ?',
+            options: ['Il chante', 'Il regarde les passants', 'Il vole', 'Il dort'],
+            reponse: 1,
+            explication: 'Le texte dit : "Il regardait les passants avec curiosité."'
+        },
+        {
+            categorie: 'Compréhension',
+            question: 'Texte : "Marie a rangé ses affaires avant de partir pour l\'école." Que fait Marie avant de partir ?',
+            options: ['Elle mange', 'Elle range ses affaires', 'Elle joue', 'Elle dort'],
+            reponse: 1,
+            explication: 'Le texte dit : "Marie a rangé ses affaires avant de partir".'
+        }
+    ];
+
+    const banqueMaths = [
+        // Additions
+        {
+            categorie: 'Addition',
+            question: 'Calcule : 245 + 189 = ?',
+            options: ['424', '434', '444', '414'],
+            reponse: 1,
+            explication: '245 + 189 = 434 (245 + 100 = 345, + 80 = 425, + 9 = 434).'
+        },
+        {
+            categorie: 'Addition',
+            question: 'Calcule : 3,5 + 2,8 = ?',
+            options: ['6,3', '5,3', '7,3', '6,8'],
+            reponse: 0,
+            explication: '3,5 + 2,8 = 6,3 (35 dixièmes + 28 dixièmes = 63 dixièmes = 6,3).'
+        },
+        // Soustractions
+        {
+            categorie: 'Soustraction',
+            question: 'Calcule : 523 - 276 = ?',
+            options: ['247', '257', '267', '237'],
+            reponse: 0,
+            explication: '523 - 276 = 247.'
+        },
+        {
+            categorie: 'Soustraction',
+            question: 'Calcule : 12,4 - 5,7 = ?',
+            options: ['6,7', '7,7', '6,3', '7,3'],
+            reponse: 0,
+            explication: '12,4 - 5,7 = 6,7.'
+        },
+        // Multiplications
+        {
+            categorie: 'Multiplication',
+            question: 'Calcule : 36 × 7 = ?',
+            options: ['242', '252', '262', '232'],
+            reponse: 1,
+            explication: '36 × 7 = 252 (30×7=210, 6×7=42, 210+42=252).'
+        },
+        {
+            categorie: 'Multiplication',
+            question: 'Calcule : 4,2 × 3 = ?',
+            options: ['12,6', '13,2', '12,2', '11,6'],
+            reponse: 0,
+            explication: '4,2 × 3 = 12,6.'
+        },
+        // Divisions
+        {
+            categorie: 'Division',
+            question: 'Calcule : 144 ÷ 12 = ?',
+            options: ['11', '12', '13', '14'],
+            reponse: 1,
+            explication: '144 ÷ 12 = 12 (car 12 × 12 = 144).'
+        },
+        {
+            categorie: 'Division',
+            question: 'Calcule : 63 ÷ 7 = ?',
+            options: ['7', '8', '9', '10'],
+            reponse: 2,
+            explication: '63 ÷ 7 = 9 (car 7 × 9 = 63).'
+        },
+        // Fractions
+        {
+            categorie: 'Fractions',
+            question: 'Calcule : ½ + ¼ = ?',
+            options: ['¾', '2/6', '3/4', '1/4'],
+            reponse: 0,
+            explication: '½ = 2/4, donc 2/4 + 1/4 = 3/4.'
+        },
+        {
+            categorie: 'Fractions',
+            question: 'Quelle est la fraction de 20 qui correspond à ¾ ?',
+            options: ['10', '12', '15', '18'],
+            reponse: 2,
+            explication: '¾ de 20 = (20 ÷ 4) × 3 = 5 × 3 = 15.'
+        },
+        // Décimaux
+        {
+            categorie: 'Décimaux',
+            question: 'Quelle est la valeur de 0,25 × 4 ?',
+            options: ['0,5', '1', '2', '2,5'],
+            reponse: 1,
+            explication: '0,25 × 4 = 1 (car 25 centièmes × 4 = 100 centièmes = 1).'
+        },
+        {
+            categorie: 'Décimaux',
+            question: 'Compare : 3,5 ___ 3,05. Quel signe ?',
+            options: ['<', '=', '>', '≤'],
+            reponse: 2,
+            explication: '3,5 > 3,05 car 3,5 = 3,50 et 3,50 > 3,05.'
+        },
+        // Géométrie - Périmètre
+        {
+            categorie: 'Géométrie',
+            question: 'Un rectangle a une longueur de 8 cm et une largeur de 5 cm. Quel est son périmètre ?',
+            options: ['26 cm', '30 cm', '40 cm', '13 cm'],
+            reponse: 0,
+            explication: 'Périmètre = 2×(L+l) = 2×(8+5) = 2×13 = 26 cm.'
+        },
+        {
+            categorie: 'Géométrie',
+            question: 'Un carré a un côté de 6 cm. Quel est son périmètre ?',
+            options: ['24 cm', '36 cm', '12 cm', '18 cm'],
+            reponse: 0,
+            explication: 'Périmètre du carré = 4 × côté = 4 × 6 = 24 cm.'
+        },
+        // Aire
+        {
+            categorie: 'Géométrie',
+            question: 'Un rectangle a une longueur de 7 cm et une largeur de 4 cm. Quelle est son aire ?',
+            options: ['22 cm²', '28 cm²', '24 cm²', '30 cm²'],
+            reponse: 1,
+            explication: 'Aire = L × l = 7 × 4 = 28 cm².'
+        },
+        {
+            categorie: 'Géométrie',
+            question: 'Un carré a un côté de 5 cm. Quelle est son aire ?',
+            options: ['20 cm²', '25 cm²', '30 cm²', '15 cm²'],
+            reponse: 1,
+            explication: 'Aire du carré = côté × côté = 5 × 5 = 25 cm².'
+        },
+        // Conversions
+        {
+            categorie: 'Mesures',
+            question: '2,5 km = ? m',
+            options: ['250 m', '2 500 m', '25 000 m', '250 000 m'],
+            reponse: 1,
+            explication: '1 km = 1 000 m, donc 2,5 km = 2,5 × 1 000 = 2 500 m.'
+        },
+        {
+            categorie: 'Mesures',
+            question: '350 g = ? kg',
+            options: ['0,35 kg', '3,5 kg', '35 kg', '0,035 kg'],
+            reponse: 0,
+            explication: '1 kg = 1 000 g, donc 350 g = 350 ÷ 1 000 = 0,35 kg.'
+        },
+        // Problèmes
+        {
+            categorie: 'Problème',
+            question: 'Un train roule à 120 km/h. Combien parcourt-il en 3 heures ?',
+            options: ['240 km', '360 km', '400 km', '300 km'],
+            reponse: 1,
+            explication: 'Distance = vitesse × temps = 120 × 3 = 360 km.'
+        },
+        {
+            categorie: 'Problème',
+            question: 'Un paquet de 6 stylos coûte 4,50 €. Quel est le prix d\'un stylo ?',
+            options: ['0,75 €', '0,80 €', '0,70 €', '0,85 €'],
+            reponse: 0,
+            explication: '4,50 ÷ 6 = 0,75 € par stylo.'
+        }
+    ];
+
+    // ============================================================
+    // 2. ÉTAT
+    // ============================================================
+    let questionsActuelles = [];
+    let reponsesUtilisateur = {};
+    let examCorrige = false;
+    let timerInterval = null;
+    let timerSecondes = 2700; // 45 min
+    let timerActif = true;
+
+    // ============================================================
+    // 3. FONCTIONS PRINCIPALES
+    // ============================================================
+
+    /** Mélange un tableau (Fisher-Yates) */
+    function melanger(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    /** Génère un examen aléatoire : 20 français + 20 maths */
+    function genererExamen() {
+        // Arrêter le timer
+        if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+        timerSecondes = 2700;
+        timerActif = true;
+        updateTimerDisplay();
+
+        // Mélanger les banques et prendre 20 de chaque
+        const francaisMelange = melanger([...banqueFrancais]);
+        const mathsMelange = melanger([...banqueMaths]);
+        const qFrancais = francaisMelange.slice(0, 20);
+        const qMaths = mathsMelange.slice(0, 20);
+
+        // Assigner un type et un index
+        qFrancais.forEach((q, i) => { q.type = 'francais'; q.index = i; });
+        qMaths.forEach((q, i) => { q.type = 'maths'; q.index = i + 20; });
+
+        questionsActuelles = [...qFrancais, ...qMaths];
+        // Mélanger l'ordre final pour plus de variété
+        questionsActuelles = melanger(questionsActuelles);
+
+        // Réinitialiser les réponses
+        reponsesUtilisateur = {};
+        examCorrige = false;
+
+        // Cacher le placement
+        document.getElementById('placementBox').classList.add('hidden');
+
+        // Réinitialiser les scores
+        document.getElementById('scoreFrench').textContent = '0';
+        document.getElementById('scoreMath').textContent = '0';
+        document.getElementById('scoreTotal').textContent = '0';
+
+        // Afficher
+        afficherQuestions();
+        mettreAJourProgres();
+    }
+
+    /** Affiche les questions dans le DOM */
+    function afficherQuestions() {
+        const container = document.getElementById('questionsContainer');
+        let html = '';
+        questionsActuelles.forEach((q, idx) => {
+            const lettres = ['A', 'B', 'C', 'D'];
+            html += `
+                <div class="question-block" id="qblock-${idx}" data-type="${q.type}" data-index="${idx}">
+                    <div class="q-title">${q.type === 'francais' ? '🇫🇷' : '🔢'} ${q.categorie} – Question ${idx+1}</div>
+                    <div class="q-text">${q.question}</div>
+                    <div class="q-options">
+                        ${q.options.map((opt, oi) => `
+                            <label>
+                                <input type="radio" name="q${idx}" value="${oi}" onchange="repondre(${idx}, ${oi})">
+                                ${lettres[oi]}. ${opt}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="expl-${idx}"></div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        mettreAJourProgres();
+    }
+
+    /** Enregistre une réponse utilisateur */
+    function repondre(idx, val) {
+        if (examCorrige) return;
+        reponsesUtilisateur[idx] = val;
+        mettreAJourProgres();
+    }
+
+    /** Met à jour la barre de progression */
+    function mettreAJourProgres() {
+        const total = questionsActuelles.length;
+        const repondues = Object.keys(reponsesUtilisateur).length;
+        const pct = total > 0 ? (repondues / total) * 100 : 0;
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressText').textContent = `${repondues} / ${total}`;
+    }
+
+    // ============================================================
+    // 4. CORRECTION
+    // ============================================================
+    function corrigerExamen() {
+        if (questionsActuelles.length === 0) {
+            alert('Générez d\'abord un examen !');
+            return;
+        }
+        examCorrige = true;
+
+        let scoreFrancais = 0, scoreMaths = 0;
+        let total = questionsActuelles.length;
+
+        questionsActuelles.forEach((q, idx) => {
+            const block = document.getElementById(`qblock-${idx}`);
+            const expl = document.getElementById(`expl-${idx}`);
+            const userAns = reponsesUtilisateur[idx];
+            const correct = q.reponse;
+
+            // Afficher l'explication
+            expl.textContent = '✅ ' + q.explication;
+            expl.classList.add('show');
+
+            // Colorer la question
+            block.classList.remove('correct', 'wrong');
+            if (userAns === undefined) {
+                block.style.borderLeftColor = '#f0a030';
+                expl.textContent = '❌ Non répondue. ' + q.explication;
+                return;
+            }
+
+            if (userAns === correct) {
+                block.classList.add('correct');
+                if (q.type === 'francais') scoreFrancais++;
+                else scoreMaths++;
+            } else {
+                block.classList.add('wrong');
+                const lettreCorrecte = ['A', 'B', 'C', 'D'][correct];
+                expl.textContent = '❌ Réponse : ' + ['A','B','C','D'][userAns] + ' | Bonne réponse : ' + lettreCorrecte + '. ' + q.explication;
+            }
+        });
+
+        // Scores
+        document.getElementById('scoreFrench').textContent = scoreFrancais;
+        document.getElementById('scoreMath').textContent = scoreMaths;
+        const totalScore = scoreFrancais + scoreMaths;
+        document.getElementById('scoreTotal').textContent = totalScore;
+
+        // Placement
+        afficherPlacement(totalScore);
+
+        // Mettre à jour la progression à 100%
+        document.getElementById('progressFill').style.width = '100%';
+        document.getElementById('progressText').textContent = `${total} / ${total}`;
+    }
+
+    /** Affiche la simulation de placement */
+    function afficherPlacement(score) {
+        const box = document.getElementById('placementBox');
+        const level = document.getElementById('placementLevel');
+        const detail = document.getElementById('placementDetail');
+        box.classList.remove('hidden');
+
+        const pct = (score / 40) * 100;
+        let niveau, couleur, desc;
+        if (pct >= 90) {
+            niveau = '🌟 Excellent – Section avancée';
+            couleur = '#2a9d8f';
+            desc = 'Très bon niveau ! Vous maîtrisez les attendus pour l\'entrée en 6ème.';
+        } else if (pct >= 75) {
+            niveau = '🔵 Bon niveau';
+            couleur = '#4a8fc0';
+            desc = 'Bon niveau, vous êtes prêt(e) pour la 6ème. Continuez à vous entraîner !';
+        } else if (pct >= 60) {
+            niveau = '🟡 Niveau correct';
+            couleur = '#f0a030';
+            desc = 'Niveau correct. Quelques révisions ciblées vous aideront à progresser.';
+        } else {
+            niveau = '🔴 Renforcement conseillé';
+            couleur = '#e76f51';
+            desc = 'Travaillez les notions que vous avez moins bien réussies et réessayez.';
+        }
+        level.textContent = niveau;
+        level.style.color = couleur;
+        detail.textContent = desc + ` (${Math.round(pct)}%)`;
+    }
+
+    // ============================================================
+    // 5. TIMER
+    // ============================================================
+    function updateTimerDisplay() {
+        const mins = Math.floor(timerSecondes / 60);
+        const secs = timerSecondes % 60;
+        document.getElementById('timerDisplay').textContent =
+            String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+        if (timerSecondes <= 0) {
+            document.getElementById('timerDisplay').style.color = '#e76f51';
+            if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+            alert('⏰ Temps écoulé ! Corrigez votre examen.');
+        } else {
+            document.getElementById('timerDisplay').style.color = '#1a3a6b';
+        }
+    }
+
+    function demarrerTimer() {
+        if (timerInterval) return;
+        timerInterval = setInterval(() => {
+            if (!timerActif) return;
+            timerSecondes--;
+            updateTimerDisplay();
+            if (timerSecondes <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                corrigerExamen();
+            }
+        }, 1000);
+    }
+
+    function toggleTimer() {
+        timerActif = !timerActif;
+        document.querySelector('.timer-bar .btn-outline').textContent = timerActif ? '⏸️' : '▶️';
+        if (timerActif && !timerInterval) demarrerTimer();
+    }
+
+    function resetTimer() {
+        if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+        timerSecondes = 2700;
+        timerActif = true;
+        document.querySelector('.timer-bar .btn-outline').textContent = '⏸️';
+        updateTimerDisplay();
+        demarrerTimer();
+    }
+
+    // ============================================================
+    // 6. IMPRESSION
+    // ============================================================
+    function imprimerExamen() {
+        window.print();
+    }
+
+    // ============================================================
+    // 7. ONGLETS
+    // ============================================================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+        });
+    });
+
+    // ============================================================
+    // 8. INITIALISATION
+    // ============================================================
+    genererExamen();
+    demarrerTimer();
+</script>
+
+</body>
+</html>
