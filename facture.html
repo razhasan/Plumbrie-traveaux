@@ -154,6 +154,48 @@
     .no-print{display:none !important;}
     .invoice{box-shadow:none;border:none;border-radius:0;max-width:100%;}
   }
+
+  /* ----- Logo styling with image reference ----- */
+  .logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .logo-frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 8px 14px 8px 10px;
+    border: 2px solid var(--navy);
+    box-shadow: 0 2px 8px rgba(38, 38, 90, 0.08);
+    transition: box-shadow 0.2s;
+    flex-shrink: 0;
+  }
+  .logo-frame img {
+    display: block;
+    height: 48px;
+    width: auto;
+    max-width: 180px;
+    object-fit: contain;
+  }
+  .inv-header .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .inv-header .brand .title-group {
+    display: flex;
+    flex-direction: column;
+  }
+  @media (max-width: 480px) {
+    .logo-frame img { height: 36px; max-width: 130px; }
+    .logo-frame { padding: 6px 10px 6px 8px; }
+    .inv-header .brand { gap: 10px; }
+  }
 </style>
 </head>
 <body>
@@ -244,9 +286,15 @@
   <div class="invoice" id="invoice">
 
     <div class="inv-header">
-      <div>
-        <h1>FACTURE</h1>
-        <div class="subtitle">SAS — Travaux de finition (Plomberie)</div>
+      <div class="brand">
+        <!-- LOGO with frame – reference to external logo.jpeg -->
+        <div class="logo-frame">
+          <img src="logo.jpeg" alt="ADR SANITAIRE" />
+        </div>
+        <div class="title-group">
+          <h1>FACTURE</h1>
+          <div class="subtitle">SAS — Travaux de finition (Plomberie)</div>
+        </div>
       </div>
       <div class="meta" id="metaDate"></div>
     </div>
@@ -390,7 +438,8 @@
     itemsEditor: document.getElementById('itemsEditor'),
     addItemBtn: document.getElementById('addItemBtn'),
     printBtn: document.getElementById('printBtn'),
-    resetBtn: document.getElementById('resetBtn')
+    resetBtn: document.getElementById('resetBtn'),
+    invoice: document.getElementById('invoice')
   };
 
   var state = { items: [] };
@@ -449,9 +498,6 @@
         } else if(field === 'price'){
           state.items[idx].price = parseFloat(this.value) || 0;
         }
-        // Only update this row's total display in place, instead of
-        // rebuilding the whole editor (which was destroying/recreating
-        // the input on every keystroke and losing focus/closing the keyboard).
         var row = this.closest('.item-row');
         var totalInput = row.querySelector('input[data-field="totalDisplay"]');
         if(totalInput){
@@ -545,8 +591,55 @@
   });
 
   els.printBtn.addEventListener('click', function(){
-    window.print();
+    printInvoice();
   });
+
+  function printInvoice(){
+    var existing = document.getElementById('printFrame');
+    if(existing){ existing.remove(); }
+
+    var iframe = document.createElement('iframe');
+    iframe.id = 'printFrame';
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    document.body.appendChild(iframe);
+
+    var styles = Array.prototype.map.call(
+      document.querySelectorAll('head link[rel="stylesheet"], head style'),
+      function(node){ return node.outerHTML; }
+    ).join('\n');
+
+    var doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(
+      '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">' +
+      styles +
+      '</head><body>' + els.invoice.outerHTML + '</body></html>'
+    );
+    doc.close();
+
+    function cleanup(){
+      if(iframe && iframe.parentNode){ iframe.parentNode.removeChild(iframe); }
+    }
+
+    iframe.onload = function(){
+      setTimeout(function(){
+        try{
+          iframe.contentWindow.focus();
+          iframe.contentWindow.print();
+        }catch(e){
+          cleanup();
+          window.print();
+          return;
+        }
+        setTimeout(cleanup, 1000);
+      }, 150);
+    };
+  }
 
   els.resetBtn.addEventListener('click', function(){
     if(confirm('Réinitialiser tous les champs de la facture ?')){
