@@ -156,12 +156,6 @@
   }
 
   /* ----- Logo styling with image reference ----- */
-  .logo-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
   .logo-frame {
     display: flex;
     align-items: center;
@@ -287,7 +281,7 @@
 
     <div class="inv-header">
       <div class="brand">
-        <!-- LOGO with frame – using logo.jpg (JPEG format) -->
+        <!-- LOGO with frame – using logo.jpg -->
         <div class="logo-frame">
           <img src="logo.jpg" alt="ADR SANITAIRE" />
         </div>
@@ -590,56 +584,10 @@
     render();
   });
 
+  // Simple reliable print function
   els.printBtn.addEventListener('click', function(){
-    printInvoice();
+    window.print();
   });
-
-  function printInvoice(){
-    var existing = document.getElementById('printFrame');
-    if(existing){ existing.remove(); }
-
-    var iframe = document.createElement('iframe');
-    iframe.id = 'printFrame';
-    iframe.style.position = 'fixed';
-    iframe.style.right = '0';
-    iframe.style.bottom = '0';
-    iframe.style.width = '0';
-    iframe.style.height = '0';
-    iframe.style.border = '0';
-    document.body.appendChild(iframe);
-
-    var styles = Array.prototype.map.call(
-      document.querySelectorAll('head link[rel="stylesheet"], head style'),
-      function(node){ return node.outerHTML; }
-    ).join('\n');
-
-    var doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(
-      '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">' +
-      styles +
-      '</head><body>' + els.invoice.outerHTML + '</body></html>'
-    );
-    doc.close();
-
-    function cleanup(){
-      if(iframe && iframe.parentNode){ iframe.parentNode.removeChild(iframe); }
-    }
-
-    iframe.onload = function(){
-      setTimeout(function(){
-        try{
-          iframe.contentWindow.focus();
-          iframe.contentWindow.print();
-        }catch(e){
-          cleanup();
-          window.print();
-          return;
-        }
-        setTimeout(cleanup, 1000);
-      }, 150);
-    };
-  }
 
   els.resetBtn.addEventListener('click', function(){
     if(confirm('Réinitialiser tous les champs de la facture ?')){
