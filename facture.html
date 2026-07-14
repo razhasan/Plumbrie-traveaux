@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Facture — ADR Sanitaire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#26265A;
+    --navy-2:#1B1B40;
+    --paper:#F3F7FC;
+    --paper-raised:#FFFFFF;
+    --line:#E3E9F2;
+    --ink:#22263A;
+    --ink-soft:#5C6478;
+    --blue:#2E6FF2;
+    --blue-dark:#1A4FC4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:28px 16px 60px;
+  }
+  .topbar{
+    max-width:820px;margin:0 auto 18px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .back-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:'Poppins',sans-serif;font-weight:700;font-size:13.5px;
+    color:var(--navy);text-decoration:none;
+  }
+  .back-link svg{width:16px;height:16px;stroke:var(--navy);}
+  .actions{display:flex;gap:8px;}
+  .btn{
+    font-family:'Poppins',sans-serif;font-weight:700;font-size:13.5px;
+    border-radius:8px;padding:9px 16px;border:none;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .btn-navy{background:var(--navy);color:#fff;}
+  .btn-navy:hover{background:var(--navy-2);}
+  .btn-outline{background:#fff;color:var(--navy);border:1px solid var(--line);}
+  .btn-outline:hover{background:var(--paper);}
+
+  .controls{
+    max-width:820px;margin:0 auto 20px;background:var(--paper-raised);
+    border:1px solid var(--line);border-radius:12px;padding:20px 22px;
+  }
+  .controls h2{
+    font-family:'Poppins',sans-serif;font-size:15px;font-weight:800;color:var(--navy);margin-bottom:14px;
+  }
+  .field-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px;}
+  .field{flex:1;min-width:180px;display:flex;flex-direction:column;gap:5px;}
+  .field label{font-size:12px;font-weight:600;color:var(--ink-soft);}
+  .field select, .field input{
+    padding:9px 10px;border:1px solid var(--line);border-radius:8px;
+    font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);background:#fff;
+  }
+  .field select:focus, .field input:focus{outline:2px solid var(--blue);outline-offset:1px;}
+
+  .items-editor{margin-top:6px;}
+  .item-row{
+    display:grid;grid-template-columns:1fr 70px 100px 100px 32px;gap:8px;margin-bottom:8px;align-items:center;
+  }
+  .item-row input{
+    padding:8px 9px;border:1px solid var(--line);border-radius:7px;font-size:13.5px;width:100%;
+  }
+  .item-row .remove-btn{
+    width:28px;height:28px;border:none;background:#fbe4e4;color:#b23b3b;border-radius:6px;cursor:pointer;
+    font-size:16px;line-height:1;
+  }
+  .add-item-btn{
+    margin-top:4px;background:none;border:1px dashed var(--line);color:var(--navy);
+    font-weight:700;font-size:13px;padding:8px 12px;border-radius:8px;cursor:pointer;width:100%;
+  }
+  .add-item-btn:hover{background:var(--paper);}
+
+  /* ---------- Invoice preview ---------- */
+  .invoice{
+    max-width:820px;margin:0 auto;background:#fff;padding:44px 48px;
+    border-radius:12px;border:1px solid var(--line);box-shadow:0 8px 24px rgba(30,40,80,0.06);
+    font-family:'Inter',sans-serif;
+  }
+  .inv-header{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    border-bottom:3px double var(--navy);padding-bottom:18px;margin-bottom:22px;gap:20px;
+  }
+  .inv-header h1{
+    font-family:'Poppins',sans-serif;font-size:30px;letter-spacing:1.5px;color:var(--navy);font-weight:800;
+  }
+  .inv-header .subtitle{font-size:13.5px;color:var(--ink-soft);margin-top:4px;}
+  .inv-header .meta{text-align:right;font-size:13.5px;color:var(--ink-soft);}
+  .row{display:flex;justify-content:space-between;gap:24px;margin-bottom:14px;flex-wrap:wrap;}
+  .col{flex:1;min-width:220px;font-size:13.5px;line-height:1.7;}
+  .col.right{text-align:right;}
+  .label-strong{font-weight:700;color:var(--navy);}
+  .address-box{
+    background:var(--paper);padding:14px 18px;border-left:6px solid var(--navy);
+    margin:16px 0 20px;border-radius:6px;
+  }
+  .client-name{font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-top:4px;}
+  .intervention-lieu{margin-bottom:6px;font-weight:700;font-size:15.5px;color:var(--ink);}
+  .intervention-desc{margin-bottom:18px;font-style:italic;color:var(--ink-soft);font-size:14px;line-height:1.6;}
+
+  table.lines{width:100%;border-collapse:collapse;margin:20px 0;}
+  table.lines th{
+    background:var(--navy);color:#fff;padding:10px 8px;text-align:left;font-size:13.5px;font-family:'Poppins',sans-serif;font-weight:700;
+  }
+  table.lines td{padding:11px 8px;border-bottom:1px solid var(--line);font-size:14px;}
+  table.lines td.num, table.lines th.num{text-align:right;}
+
+  .totals{text-align:right;font-size:15.5px;padding:10px 0;}
+  .totals .grand{
+    font-size:21px;font-weight:800;color:var(--navy);padding-top:14px;
+    border-top:3px double var(--navy);margin-top:10px;font-family:'Poppins',sans-serif;
+  }
+
+  .tech-details{
+    margin-top:26px;background:var(--paper);border-radius:8px;padding:16px 18px;font-size:13px;color:var(--ink-soft);
+  }
+  .tech-details .label-strong{display:block;margin-bottom:6px;font-size:13px;}
+
+  .signature-block{margin-top:34px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .signature-box{flex:1;min-width:200px;}
+  .signature-box.right{text-align:right;}
+  .signature-box .sig-label{font-family:'Poppins',sans-serif;font-weight:700;font-size:13.5px;color:var(--navy);}
+  .signature-box .sig-name{font-size:13.5px;color:var(--ink);margin:4px 0;}
+  .signature-box .sig-line{
+    border-top:1px solid var(--ink);padding-top:6px;margin-top:10px;font-size:12px;color:var(--ink-soft);min-height:50px;
+  }
+
+  .footer-note{
+    margin-top:30px;display:flex;justify-content:space-between;font-size:12.5px;color:var(--ink-soft);
+    border-top:1px solid var(--line);padding-top:16px;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:640px){
+    .invoice{padding:28px 20px;}
+    .inv-header{flex-direction:column;}
+    .inv-header .meta{text-align:left;}
+    .item-row{grid-template-columns:1fr;}
+    .item-row .remove-btn{justify-self:end;width:100%;}
+  }
+
+  .no-print{}
+  @media print{
+    body{background:#fff;padding:0;}
+    .no-print{display:none !important;}
+    .invoice{box-shadow:none;border:none;border-radius:0;max-width:100%;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar no-print">
+    <a class="back-link" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      Retour à l'accueil
+    </a>
+    <div class="actions">
+      <button class="btn btn-outline" id="resetBtn" type="button">Réinitialiser</button>
+      <button class="btn btn-navy" id="printBtn" type="button">Imprimer / Enregistrer en PDF</button>
+    </div>
+  </div>
+
+  <div class="controls no-print">
+    <h2>Détails de l'intervention</h2>
+    <div class="field-row">
+      <div class="field">
+        <label for="interventionType">Type d'intervention</label>
+        <select id="interventionType">
+          <option value="urgence">Dépannage / Urgence fuite d'eau</option>
+          <option value="wc">Installation WC</option>
+          <option value="reparation">Réparation fuite (raccord / joint)</option>
+          <option value="chauffeeau">Installation chauffe-eau</option>
+          <option value="debouchage">Débouchage canalisation</option>
+          <option value="autre">Autre / Personnalisé</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="dateIntervention">Date d'intervention</label>
+        <input type="date" id="dateIntervention">
+      </div>
+      <div class="field">
+        <label for="dateEmission">Date d'émission</label>
+        <input type="date" id="dateEmission">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="clientName">Nom du client</label>
+        <input type="text" id="clientName" placeholder="Nom et prénom du client">
+      </div>
+      <div class="field">
+        <label for="clientAddress">Adresse du client (facultatif)</label>
+        <input type="text" id="clientAddress" placeholder="Adresse du client">
+      </div>
+      <div class="field">
+        <label for="reglement">Règlement</label>
+        <select id="reglement">
+          <option>Espèces</option>
+          <option>Chèque</option>
+          <option>Virement</option>
+          <option>Carte bancaire</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="lieuIntervention">Lieu d'intervention</label>
+        <input type="text" id="lieuIntervention">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field" style="min-width:100%;">
+        <label for="descIntervention">Description de l'intervention</label>
+        <input type="text" id="descIntervention">
+      </div>
+    </div>
+
+    <h2 style="margin-top:18px;">Lignes de facturation</h2>
+    <div class="items-editor" id="itemsEditor"></div>
+    <button class="add-item-btn" id="addItemBtn" type="button">+ Ajouter une ligne</button>
+
+    <div class="field-row" style="margin-top:16px;">
+      <div class="field">
+        <label for="tauxTVA">Taux de TVA (%)</label>
+        <input type="number" id="tauxTVA" value="10" min="0" max="100" step="0.5">
+      </div>
+      <div class="field" style="min-width:100%;">
+        <label for="techDetails">Détails techniques (bas de facture)</label>
+        <input type="text" id="techDetails" placeholder="Ex : pression testée à 3 bars, garantie pièces 6 mois...">
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= INVOICE PREVIEW ================= -->
+  <div class="invoice" id="invoice">
+
+    <div class="inv-header">
+      <div>
+        <h1>FACTURE</h1>
+        <div class="subtitle">SAS — Travaux de finition (Plomberie)</div>
+      </div>
+      <div class="meta" id="metaDate"></div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <span class="label-strong">A.D.R SANITAIRE</span><br>
+        2 Allée Maurice Utrillo<br>
+        95170 DEUIL-LA-BARRE<br>
+        Tel : <a href="tel:+33783338968" style="color:inherit;text-decoration:none;">07 83 33 89 68</a><br>
+        SIRET : 980 263 057 00013<br>
+        APE : 43.39Z — Autres travaux de finition
+      </div>
+      <div class="col right" id="metaCol"></div>
+    </div>
+
+    <div class="address-box">
+      <strong>Facturé à :</strong><br>
+      <div class="client-name" id="previewClientName">Nom du client</div>
+      <span id="previewClientAddress"></span>
+    </div>
+
+    <p class="intervention-lieu" id="previewLieu">Lieu d'intervention : —</p>
+    <p class="intervention-desc" id="previewDesc"></p>
+
+    <table class="lines">
+      <thead>
+        <tr><th>Désignation</th><th class="num">Quantité</th><th class="num">Prix HT</th><th class="num">Total HT</th></tr>
+      </thead>
+      <tbody id="previewLinesBody"></tbody>
+    </table>
+
+    <div class="totals">
+      <div><strong>Total HT :</strong> <span id="totalHT">0,00 €</span></div>
+      <div><strong>TVA (<span id="tvaRateLabel">10</span>%) :</strong> <span id="totalTVA">0,00 €</span></div>
+      <div class="grand">Total TTC : <span id="totalTTC">0,00 €</span></div>
+    </div>
+
+    <div class="tech-details" id="techDetailsBox" style="display:none;">
+      <span class="label-strong">Détails techniques</span>
+      <span id="previewTechDetails"></span>
+    </div>
+
+    <div class="signature-block">
+      <div class="signature-box">
+        <div class="sig-label">Signature du client</div>
+        <div class="sig-name" id="previewSignClient">Nom du client</div>
+        <div class="sig-line">(Bon pour accord)</div>
+      </div>
+      <div class="signature-box right">
+        <div class="sig-label">Signature du plombier</div>
+        <div class="sig-name">Pour A.D.R SANITAIRE</div>
+        <div class="sig-line" style="border-top:2px solid var(--ink);min-height:60px;"></div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span id="previewReglement">Règlement effectué en espèces à réception</span>
+      <span>Merci de votre confiance</span>
+    </div>
+
+  </div>
+
+<script>
+(function(){
+
+  // ---------- Preset templates per intervention type ----------
+  var presets = {
+    urgence: {
+      lieu: "Cave sous-sol",
+      desc: "Intervention pour fuite d'eau sur raccord PVC en partie basse, accessible mais en position délicate nécessitant un démontage partiel. Remplacement du joint d'étanchéité défectueux, du manchon de serrage et contrôle de l'étanchéité sous pression.",
+      items: [
+        { name: "Déplacement et diagnostic", qty: 1, price: 60 },
+        { name: "Réparation fuite — démontage + remplacement joint et manchon", qty: 1, price: 85 },
+        { name: "Fournitures (joint, téflon, collier de serrage)", qty: 1, price: 15 }
+      ],
+      tech: "Pression testée à 3 bars pendant 10 minutes, aucune fuite constatée. Garantie pièces et main d'oeuvre : 6 mois."
+    },
+    wc: {
+      lieu: "Salle d'eau / WC",
+      desc: "Dépose de l'ancien WC, installation d'un WC neuf avec joint de bride et raccordement à l'alimentation et à l'évacuation. Contrôle d'étanchéité et de la chasse d'eau.",
+      items: [
+        { name: "Déplacement et diagnostic", qty: 1, price: 50 },
+        { name: "Dépose ancien WC", qty: 1, price: 40 },
+        { name: "Installation WC neuf (pose + raccordement)", qty: 1, price: 120 },
+        { name: "Fournitures (joint bride, flexible, fixations)", qty: 1, price: 25 }
+      ],
+      tech: "Chasse d'eau testée à 3 reprises, aucune fuite au niveau de la bride ni du flexible. Garantie pose : 1 an."
+    },
+    reparation: {
+      lieu: "Cuisine / sous évier",
+      desc: "Réparation d'une fuite au niveau d'un raccord ou d'un joint, avec remplacement des pièces défectueuses et contrôle de l'étanchéité après intervention.",
+      items: [
+        { name: "Déplacement et diagnostic", qty: 1, price: 60 },
+        { name: "Réparation fuite (remplacement joint / raccord)", qty: 1, price: 70 },
+        { name: "Fournitures", qty: 1, price: 15 }
+      ],
+      tech: "Étanchéité contrôlée sous pression après intervention. Garantie pièces et main d'oeuvre : 6 mois."
+    },
+    chauffeeau: {
+      lieu: "Cellier / buanderie",
+      desc: "Dépose de l'ancien chauffe-eau, installation d'un chauffe-eau neuf avec raccordement hydraulique et électrique, purge et mise en service.",
+      items: [
+        { name: "Déplacement et diagnostic", qty: 1, price: 60 },
+        { name: "Dépose ancien chauffe-eau", qty: 1, price: 80 },
+        { name: "Installation chauffe-eau neuf (pose + raccordement)", qty: 1, price: 220 },
+        { name: "Fournitures (groupe de sécurité, raccords)", qty: 1, price: 45 }
+      ],
+      tech: "Mise en service effectuée, purge réalisée, groupe de sécurité testé. Garantie pose : 1 an (garantie constructeur selon appareil)."
+    },
+    debouchage: {
+      lieu: "Canalisation / évacuation",
+      desc: "Débouchage d'une canalisation obstruée par furet mécanique, contrôle de l'écoulement après intervention.",
+      items: [
+        { name: "Déplacement et diagnostic", qty: 1, price: 60 },
+        { name: "Débouchage canalisation (furet mécanique)", qty: 1, price: 90 }
+      ],
+      tech: "Écoulement contrôlé après débouchage, aucune remontée constatée. Garantie intervention : 30 jours."
+    },
+    autre: {
+      lieu: "",
+      desc: "",
+      items: [
+        { name: "Déplacement et diagnostic", qty: 1, price: 60 }
+      ],
+      tech: ""
+    }
+  };
+
+  var els = {
+    interventionType: document.getElementById('interventionType'),
+    dateIntervention: document.getElementById('dateIntervention'),
+    dateEmission: document.getElementById('dateEmission'),
+    clientName: document.getElementById('clientName'),
+    clientAddress: document.getElementById('clientAddress'),
+    reglement: document.getElementById('reglement'),
+    lieuIntervention: document.getElementById('lieuIntervention'),
+    descIntervention: document.getElementById('descIntervention'),
+    tauxTVA: document.getElementById('tauxTVA'),
+    techDetails: document.getElementById('techDetails'),
+    itemsEditor: document.getElementById('itemsEditor'),
+    addItemBtn: document.getElementById('addItemBtn'),
+    printBtn: document.getElementById('printBtn'),
+    resetBtn: document.getElementById('resetBtn')
+  };
+
+  var state = { items: [] };
+
+  function todayISO(){
+    var d = new Date();
+    var m = String(d.getMonth()+1).padStart(2,'0');
+    var day = String(d.getDate()).padStart(2,'0');
+    return d.getFullYear() + '-' + m + '-' + day;
+  }
+
+  function frDate(iso){
+    if(!iso) return '';
+    var parts = iso.split('-');
+    if(parts.length !== 3) return iso;
+    return parts[2] + '/' + parts[1] + '/' + parts[0];
+  }
+
+  function eur(n){
+    if(isNaN(n)) n = 0;
+    return n.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €';
+  }
+
+  function applyPreset(key){
+    var p = presets[key] || presets.autre;
+    els.lieuIntervention.value = p.lieu;
+    els.descIntervention.value = p.desc;
+    els.techDetails.value = p.tech;
+    state.items = p.items.map(function(it){ return { name: it.name, qty: it.qty, price: it.price }; });
+    renderItemsEditor();
+    render();
+  }
+
+  function renderItemsEditor(){
+    els.itemsEditor.innerHTML = '';
+    state.items.forEach(function(item, idx){
+      var row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML =
+        '<input type="text" data-idx="'+idx+'" data-field="name" placeholder="Désignation" value="'+escapeHtml(item.name)+'">' +
+        '<input type="number" data-idx="'+idx+'" data-field="qty" min="0" step="1" value="'+item.qty+'">' +
+        '<input type="number" data-idx="'+idx+'" data-field="price" min="0" step="0.01" value="'+item.price+'">' +
+        '<input type="text" data-idx="'+idx+'" data-field="totalDisplay" value="'+eur(item.qty*item.price)+'" disabled>' +
+        '<button type="button" class="remove-btn" data-idx="'+idx+'" title="Supprimer">×</button>';
+      els.itemsEditor.appendChild(row);
+    });
+
+    els.itemsEditor.querySelectorAll('input[data-field]').forEach(function(input){
+      input.addEventListener('input', function(){
+        var idx = parseInt(this.getAttribute('data-idx'), 10);
+        var field = this.getAttribute('data-field');
+        if(field === 'name'){
+          state.items[idx].name = this.value;
+        } else if(field === 'qty'){
+          state.items[idx].qty = parseFloat(this.value) || 0;
+        } else if(field === 'price'){
+          state.items[idx].price = parseFloat(this.value) || 0;
+        }
+        renderItemsEditor();
+        render();
+      });
+    });
+
+    els.itemsEditor.querySelectorAll('.remove-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var idx = parseInt(this.getAttribute('data-idx'), 10);
+        state.items.splice(idx, 1);
+        renderItemsEditor();
+        render();
+      });
+    });
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function render(){
+    var dInterv = frDate(els.dateIntervention.value);
+    var dEmis = frDate(els.dateEmission.value);
+    document.getElementById('metaDate').textContent = dEmis || '';
+    document.getElementById('metaCol').innerHTML =
+      '<span class="label-strong">Date d\'intervention :</span> ' + (dInterv || '—') + '<br>' +
+      '<span class="label-strong">Date d\'émission :</span> ' + (dEmis || '—') + '<br>' +
+      '<span class="label-strong">Règlement :</span> ' + escapeHtml(els.reglement.value);
+
+    var name = els.clientName.value.trim() || 'Nom du client';
+    document.getElementById('previewClientName').textContent = name;
+    document.getElementById('previewSignClient').textContent = name;
+    document.getElementById('previewClientAddress').innerHTML = els.clientAddress.value.trim()
+      ? escapeHtml(els.clientAddress.value.trim()).replace(/\n/g,'<br>')
+      : '';
+
+    document.getElementById('previewLieu').textContent = "Lieu d'intervention : " + (els.lieuIntervention.value.trim() || '—');
+    document.getElementById('previewDesc').textContent = els.descIntervention.value.trim();
+
+    var tbody = document.getElementById('previewLinesBody');
+    tbody.innerHTML = '';
+    var totalHT = 0;
+    state.items.forEach(function(item){
+      var lineTotal = (item.qty || 0) * (item.price || 0);
+      totalHT += lineTotal;
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + escapeHtml(item.name || '') + '</td>' +
+        '<td class="num">' + (item.qty || 0) + '</td>' +
+        '<td class="num">' + eur(item.price || 0) + '</td>' +
+        '<td class="num">' + eur(lineTotal) + '</td>';
+      tbody.appendChild(tr);
+    });
+
+    var tvaRate = parseFloat(els.tauxTVA.value) || 0;
+    var tva = totalHT * (tvaRate / 100);
+    var ttc = totalHT + tva;
+
+    document.getElementById('totalHT').textContent = eur(totalHT);
+    document.getElementById('tvaRateLabel').textContent = tvaRate;
+    document.getElementById('totalTVA').textContent = eur(tva);
+    document.getElementById('totalTTC').textContent = eur(ttc);
+
+    var tech = els.techDetails.value.trim();
+    var techBox = document.getElementById('techDetailsBox');
+    if(tech){
+      techBox.style.display = 'block';
+      document.getElementById('previewTechDetails').textContent = ' ' + tech;
+    } else {
+      techBox.style.display = 'none';
+    }
+
+    document.getElementById('previewReglement').textContent = 'Règlement effectué en ' + els.reglement.value.toLowerCase() + ' à réception';
+  }
+
+  els.interventionType.addEventListener('change', function(){
+    applyPreset(this.value);
+  });
+
+  [els.dateIntervention, els.dateEmission, els.clientName, els.clientAddress,
+   els.reglement, els.lieuIntervention, els.descIntervention, els.tauxTVA, els.techDetails
+  ].forEach(function(el){ el.addEventListener('input', render); el.addEventListener('change', render); });
+
+  els.addItemBtn.addEventListener('click', function(){
+    state.items.push({ name: '', qty: 1, price: 0 });
+    renderItemsEditor();
+    render();
+  });
+
+  els.printBtn.addEventListener('click', function(){
+    window.print();
+  });
+
+  els.resetBtn.addEventListener('click', function(){
+    if(confirm('Réinitialiser tous les champs de la facture ?')){
+      els.clientName.value = '';
+      els.clientAddress.value = '';
+      els.dateIntervention.value = todayISO();
+      els.dateEmission.value = todayISO();
+      els.reglement.value = 'Espèces';
+      els.tauxTVA.value = 10;
+      els.interventionType.value = 'urgence';
+      applyPreset('urgence');
+    }
+  });
+
+  // ---------- init ----------
+  els.dateIntervention.value = todayISO();
+  els.dateEmission.value = todayISO();
+  applyPreset('urgence');
+
+})();
+</script>
+
+</body>
+</html>
