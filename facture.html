@@ -449,7 +449,14 @@
         } else if(field === 'price'){
           state.items[idx].price = parseFloat(this.value) || 0;
         }
-        renderItemsEditor();
+        // Only update this row's total display in place, instead of
+        // rebuilding the whole editor (which was destroying/recreating
+        // the input on every keystroke and losing focus/closing the keyboard).
+        var row = this.closest('.item-row');
+        var totalInput = row.querySelector('input[data-field="totalDisplay"]');
+        if(totalInput){
+          totalInput.value = eur(state.items[idx].qty * state.items[idx].price);
+        }
         render();
       });
     });
